@@ -966,7 +966,7 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 1px solid #eee;
+  border-top: 7px solid #eee;
 }
 .sr-only {
   position: absolute;
@@ -1387,9 +1387,19 @@ pre code {
   max-height: 340px;
   overflow-y: scroll;
 }
+.container-row{
+  padding-top: 30px;
+  padding-bottom: 30px;
+  text-align: center;
+}
 .starter-template{
   padding-top: 175px;
   padding-bottom: 50px;
+  text-align: center;
+}
+.contact-me-temp{
+  padding-top: 300px;
+  padding-bottom:300px;
   text-align: center;
 }
 .container {
