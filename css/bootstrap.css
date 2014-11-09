@@ -966,7 +966,7 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 7px solid #eee;
+  border-top: 5px solid #eee;
 }
 .sr-only {
   position: absolute;
@@ -1355,6 +1355,7 @@ kbd {
   -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);
           box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);
 }
+
 kbd kbd {
   padding: 0;
   font-size: 100%;
@@ -1383,6 +1384,14 @@ pre code {
   background-color: transparent;
   border-radius: 0;
 }
+.containercircles {
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 200px;
+  padding-bottom: 200px;
+  margin-right: auto;
+  margin-left: auto;
+}
 .pre-scrollable {
   max-height: 340px;
   overflow-y: scroll;
@@ -1408,6 +1417,7 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+
 @media (min-width: 768px) {
   .container {
     width: 750px;
