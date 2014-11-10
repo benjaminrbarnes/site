@@ -1,0 +1,48 @@
+.containercircles {
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 200px;
+  padding-bottom: 200px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+.col-lg-4{
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-top: 50px; 
+   margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+.contact-me-temp{
+  padding-top: 300px;
+  padding-bottom:300px;
+  text-align: center;
+}
+.row {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+.cont {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.in.collapse+a.btn.showdetails:before
+{
+    content:'Hide details «';
+}
+.collapse+a.btn.showdetails:before
+{
+    content:'Show details »';
+}
