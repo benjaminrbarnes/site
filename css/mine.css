@@ -1,15 +1,15 @@
 .projectHrContainer {
-	margin-right: 150px;
-	margin-left: 150px;
-}
-.projectHrSplit {
 	margin-right: 200px;
 	margin-left: 200px;
+}
+.projectHrSplit {
+	margin-right: 220px;
+	margin-left: 220px;
 }
 .containercircles {
 	padding-right: 50px;
 	padding-left: 50px;
-	padding-top: 50px;
+	padding-top:5px;	
 	padding-bottom: 50px;
 	margin-right: auto;
 	margin-left: auto;
@@ -61,8 +61,20 @@ hr {
   border-top: 5px solid #b2b2b2;
  }
 .projectDivider{
+	margin-top: 10px;
+  margin-bottom: 15px;
+  border: 0;
+  border-top: 2px solid #eee;
+}
+.projectDivider2{
 	margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 3px solid #eee;
+  border-top: 4px solid #b2b2b2;
+ }
+.left{
+	float: left;
+}
+.right{
+	float:right;
 }
