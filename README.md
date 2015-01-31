@@ -1,4 +1,6 @@
 Website
 =======
 
-Personal website I am working on made from Bootstrap. 
+Personal website made from Bootstrap. 
+
+Website can be reached at: http://benjaminbarnes.co/
