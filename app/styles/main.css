@@ -7,11 +7,13 @@
 
 body {
   padding: 0;
+  padding-top: 70px;
+  font-family: 'Lato', sans-serif;
+  font-size: 1.9em;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
-.marketing,
 .footer {
   padding-left: 15px;
   padding-right: 15px;
@@ -21,6 +23,7 @@ body {
 .header {
   border-bottom: 1px solid #e5e5e5;
   margin-bottom: 10px;
+  /*background: rgba(0, 0, 0, 0.1);*/
 }
 /* Make the masthead heading the same height as the navigation */
 .header h3 {
@@ -44,19 +47,34 @@ body {
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  font-size: 21px;
-  padding: 14px 24px;
+  background: rgba(0,0,0,0);
+  border-radius: 0 !important;
 }
 
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
+.post-title {
+    font-size: 2em;
+    background: rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    padding: 20px
+    /*opacity: 1 !important;*/
 }
-.marketing p + h4 {
-  margin-top: 28px;
+
+.row-post {
+    opacity: 0.9;
+    text-align: center;
+    margin: 50px 0px 50px 0px;
+    padding: 150px 0px 150px 0px;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+#slovenia {
+    background-image: url('../images/sloo.jpg');
+}
+
+#redwoods {
+    background-image: url('../images/redwoods.jpg');
 }
 
 /* Responsive: Portrait tablets and up */
@@ -67,7 +85,6 @@ body {
 
   /* Remove the padding we set earlier */
   .header,
-  .marketing,
   .footer {
     padding-left: 0;
     padding-right: 0;
@@ -75,9 +92,5 @@ body {
   /* Space out the masthead */
   .header {
     margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
   }
 }
