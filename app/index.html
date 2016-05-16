@@ -17,8 +17,11 @@
     <!-- font -->
     <link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
     <!-- fontend -->
+    <!-- Social Share Kit CSS -->
+
 </head>
 <body ng-app="siteApp">
+
     <!--[if lte IE 8]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -26,7 +29,7 @@
     <!-- Add your site or application content here -->
     <!-- <div class="header"> -->
     <!-- <div class="navbar navbar-default navbar-fixed-top trans" role="navigation"> -->
-    <div class="navbar navbar-default" role="navigation">
+    <div class="navbar navbar-default" role="navigation" id="navbar">
         <div class="container">
             <div class="navbar-header">
 
@@ -44,7 +47,7 @@
                 <ul class="nav navbar-nav">
                     <li><a href="#/">Blog</a></li>
                     <li><a ng-href="#/about">About</a></li>
-                    <li><a ng-href="#/">Contact</a></li>
+                    <li><a ng-href="#/contact">Contact</a></li>
                 </ul>
             </div>
         </div>
@@ -73,6 +76,21 @@
     ga('send', 'pageview');
     </script>
 
+
+    <script type="text/javascript">
+        SocialShareKit.init({
+        onBeforeOpen: function(targetElement, network, paramsObj){
+            console.log(arguments);
+        },
+        onOpen: function(targetElement, network, url, popupWindow){
+            console.log(arguments);
+        },
+        onClose: function(targetElement, network, url, popupWindow){
+            console.log(arguments);
+        }
+    });
+    </script>
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -92,6 +110,7 @@
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/about.js"></script>
     <script src="scripts/controllers/redwoods.js"></script>
+    <script src="scripts/controllers/contact.js"></script>
     <!-- endbuild -->
 </body>
 </html>

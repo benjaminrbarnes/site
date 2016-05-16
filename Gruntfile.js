@@ -220,7 +220,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -339,7 +339,7 @@ module.exports = function (grunt) {
       dist: {
         options: {
           module: 'siteApp',
-          htmlmin: '<%= htmlmin.dist.options %>',
+        //   htmlmin: '<%= htmlmin.dist.options %>',
           usemin: 'scripts/scripts.js'
         },
         cwd: '<%= yeoman.app %>',
