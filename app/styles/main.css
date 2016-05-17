@@ -22,6 +22,7 @@ a:link {
 
 .img-desc {
     padding-top: 10px;
+    font-weight: 300;
 }
 
 .img {
@@ -103,10 +104,17 @@ body {
     background-image: url('../images/redwoods.jpg');
 }
 
+#cali {
+    background-image: url('../images/cali.jpg');
+
+}
+
 .description {
     font-weight: 300;
+    width: 80%;
     text-align: center;
-    padding-bottom: 40px
+    padding-bottom: 40px;
+    margin-left: 10%;
 }
 
 /* Responsive: Portrait tablets and up */

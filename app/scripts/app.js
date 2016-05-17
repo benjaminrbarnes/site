@@ -15,7 +15,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    '720kb.socialshare'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -29,15 +30,25 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
-      .when('/redwoods', {
-        templateUrl: 'views/redwoods.html',
-        controller: 'RedwoodsCtrl',
-        controllerAs: 'redwoods'
-      })
+    //   .when('/redwoods', {
+    //     templateUrl: 'views/redwoods.html',
+    //     controller: 'RedwoodsCtrl',
+    //     controllerAs: 'redwoods'
+    //   })
       .when('/contact', {
         templateUrl: 'views/contact.html',
         controller: 'ContactCtrl',
         controllerAs: 'contact'
+      })
+      .when('/slovenia', {
+        templateUrl: 'views/slovenia.html',
+        controller: 'SloveniaCtrl',
+        controllerAs: 'slovenia'
+      })
+      .when('/slovenia-part-2', {
+        templateUrl: 'views/slovenia-part-2.html',
+        controller: 'SloveniaPart2Ctrl',
+        controllerAs: 'sloveniaPart2'
       })
       .otherwise({
         redirectTo: '/'
