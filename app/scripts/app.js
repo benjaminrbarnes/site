@@ -30,11 +30,11 @@ angular
         controller: 'AboutCtrl',
         controllerAs: 'about'
       })
-    //   .when('/redwoods', {
-    //     templateUrl: 'views/redwoods.html',
-    //     controller: 'RedwoodsCtrl',
-    //     controllerAs: 'redwoods'
-    //   })
+      .when('/redwoods', {
+        templateUrl: 'views/redwoods.html',
+        controller: 'RedwoodsCtrl',
+        controllerAs: 'redwoods'
+      })
       .when('/contact', {
         templateUrl: 'views/contact.html',
         controller: 'ContactCtrl',
