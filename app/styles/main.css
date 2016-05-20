@@ -14,6 +14,11 @@ a:link {
     background: rgba(248, 248, 248, 0.7);
 }
 
+.larger {
+    height: 50px;
+    width: 50px;
+}
+
 .navbar .navbar-nav {
   display: inline-block;
   float: none;

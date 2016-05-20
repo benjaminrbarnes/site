@@ -9,9 +9,4 @@
  */
 angular.module('siteApp')
   .controller('SloveniaPart2Ctrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
   });
