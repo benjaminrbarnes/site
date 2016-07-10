@@ -106,6 +106,10 @@ body {
     background-position: center;
 }
 
+.bottom {
+    background-position: bottom;
+}
+
 #slovenia {
     background-image: url('../images/sloo.jpg');
 }
@@ -118,8 +122,8 @@ body {
     background-image: url('../images/redwoods.jpg');
 }
 
-#cali {
-    background-image: url('../images/cali.jpg');
+#redwoods1 {
+    background-image: url('../images/redwoods1.jpg');
 
 }
 
