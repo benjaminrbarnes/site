@@ -1,4 +1,4 @@
 Website
 =======
 
-Personal website made from Bootstrap. 
+A personal, static website hosted on S3
