@@ -50,6 +50,11 @@ angular
         controller: 'SloveniaPart2Ctrl',
         controllerAs: 'sloveniaPart2'
       })
+      .when('/omaha', {
+        templateUrl: 'views/omaha.html',
+        controller: 'OmahaCtrl',
+        controllerAs: 'omaha'
+      })
       .otherwise({
         redirectTo: '/'
       });
