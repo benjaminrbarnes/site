@@ -131,7 +131,13 @@ body {
 
 #redwoods1 {
     background-image: url('../images/redwoods1.jpg');
+}
 
+#blip {
+    background-image: url('../images/water.jpg');
+}
+#jess {
+    background-image: url('../images/jess.jpg');
 }
 
 .description {
