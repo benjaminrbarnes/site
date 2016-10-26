@@ -55,6 +55,11 @@ angular
         controller: 'OmahaCtrl',
         controllerAs: 'omaha'
       })
+      .when('/blip', {
+        templateUrl: 'views/blip.html',
+        controller: 'BlipCtrl',
+        controllerAs: 'blip'
+      })
       .otherwise({
         redirectTo: '/'
       });
