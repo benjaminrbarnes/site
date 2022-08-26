@@ -37,9 +37,9 @@ export default function Gallery() {
 
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
-                <Link to="/photos/p12"><img class="img-fluid" src="https://s3.us-west-2.amazonaws.com/benjaminbarnes.co/photos/14-june2022-3/md/img26.jpg"/></Link>
+                <Link to="/photos/p14"><img class="img-fluid" src="https://s3.us-west-2.amazonaws.com/benjaminbarnes.co/photos/14-june2022-3/md/img26.jpg"/></Link>
                 <div class="card-body">
-                  <Link to="/photos/p12"><p class="card-text">June 2022 - 3</p></Link>
+                  <Link to="/photos/p14"><p class="card-text">June 2022 - 3</p></Link>
                   <p class="card-text">Peter's wedding</p>
                 </div>
               </div>
@@ -47,9 +47,9 @@ export default function Gallery() {
 
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
-                <Link to="/photos/p12"><img class="img-fluid" src="https://s3.us-west-2.amazonaws.com/benjaminbarnes.co/photos/13-june2022-2/md/img16.jpg"/></Link>
+                <Link to="/photos/p13"><img class="img-fluid" src="https://s3.us-west-2.amazonaws.com/benjaminbarnes.co/photos/13-june2022-2/md/img16.jpg"/></Link>
                 <div class="card-body">
-                  <Link to="/photos/p12"><p class="card-text">June 2022 - 2</p></Link>
+                  <Link to="/photos/p13"><p class="card-text">June 2022 - 2</p></Link>
                   <p class="card-text">Scott Bachelor Party / Colorado / Peter's wedding</p>
                 </div>
               </div>
