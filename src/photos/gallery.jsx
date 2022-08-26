@@ -10,7 +10,7 @@ export default function Gallery() {
                 <Link to="/photos/lateJuly2022"><img class="img-fluid" src="https://s3.us-west-2.amazonaws.com/benjaminbarnes.co/photos/8-25-2022/2/md/img28.jpg"/></Link>
                 <div class="card-body">
                   <Link to="/photos/lateJuly2022"><p class="card-text">July 2022 - 2</p></Link>
-                  <p class="card-text">Pool with Payton / Visiting Zach in LA </p>
+                  <p class="card-text">Pool with Payton / Visiting Zach & Eliz in LA </p>
                 </div>
               </div>
             </div>
