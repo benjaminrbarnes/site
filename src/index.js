@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import App from "./App";
 
+import Contact from "./views/contact";
+
 import Gallery from "./photos/gallery";
 import LateJuly2022 from "./photos/lateJuly2022";
 import EarlyJuly2022 from "./photos/earlyJuly2022";
@@ -34,9 +36,9 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App />}>
-        <Route path="photos/gallery" element={<Gallery />}/>
-        <Route path="photos/lateJuly2022" element={<LateJuly2022 />}/>
-        <Route path="photos/earlyJuly2022" element={<EarlyJuly2022 />}/>
+        <Route path="/" element={<Gallery />}/>
+        <Route path="/contact" element={<Contact />}/>
+
         <Route path="photos/p1" element={<P1 />}/>
         <Route path="photos/p2" element={<P2 />}/>
         <Route path="photos/p3" element={<P3 />}/>
@@ -52,7 +54,8 @@ root.render(
         <Route path="photos/p13" element={<P13 />}/>
         <Route path="photos/p14" element={<P14 />}/>
         <Route path="photos/p15" element={<P15 />}/>
-
+        <Route path="photos/lateJuly2022" element={<LateJuly2022 />}/>
+        <Route path="photos/earlyJuly2022" element={<EarlyJuly2022 />}/>
       </Route>
     </Routes>
   </BrowserRouter>
