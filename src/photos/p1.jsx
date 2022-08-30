@@ -4,11 +4,9 @@ export default function One() {
     <main>
         <div class="row">
           <div class="col">
-            <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img1.JPG"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img2.JPG"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img3.JPG"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img4.JPG"/>
-            <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img5.JPG"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img6.JPG"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img7.JPG"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/1-aug2021-1/md/img8.JPG"/>
