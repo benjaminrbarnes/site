@@ -10,7 +10,25 @@ export default function Gallery() {
 
       <nav>
         <div class="row">
-            
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p17"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/17-july2022-2/md/img31.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p17"><p class="card-text">Aug 2022</p></Link>
+                  <p class="card-text">Scott & Connie Wedding</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p16"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/16-july2022-1/md/img34.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p16"><p class="card-text">July & Aug 2022</p></Link>
+                  <p class="card-text">Visiting Zach & Eliz in LA / Scott & Connie Wedding</p>
+                </div>
+              </div>
+            </div>
 
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
