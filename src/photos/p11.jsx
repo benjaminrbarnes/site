@@ -36,7 +36,6 @@ export default function One() {
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/11-feb2022/md/img30.jpg"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/11-feb2022/md/img31.jpg"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/11-feb2022/md/img32.jpg"/>
-            <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/11-feb2022/md/img33.jpg"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/11-feb2022/md/img34.jpg"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/11-feb2022/md/img35.jpg"/>
             <img class="img-fluid" style={{"max-height": "1000px", "display": "block", "margin": "auto"}} src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/11-feb2022/md/img36.jpg"/>
