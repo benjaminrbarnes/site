@@ -12,6 +12,34 @@ export default function Gallery() {
         <div class="row">
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p20"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/20-feb2023/md/img12.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p20"><p class="card-text">Jan & Feb 2023</p></Link>
+                  <p class="card-text">North GA / Seattle Trip</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p19"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/19-dec2022/md/img3.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p19"><p class="card-text">Nov & Dec 2022</p></Link>
+                  <p class="card-text">Christmas / New Years</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p18"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/18-aug2022/md/img19.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p18"><p class="card-text">Sept - Nov 2022</p></Link>
+                  <p class="card-text">New house / Halloween / Thanksgiving</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
                 <Link to="/photos/p17"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/17-july2022-2/md/img31.jpg"/></Link>
                 <div class="card-body">
                   <Link to="/photos/p17"><p class="card-text">Aug 2022</p></Link>

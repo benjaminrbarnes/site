@@ -1,3 +1,15 @@
+# For Photos
+1. Download from dropbox link
+1. Rotate and color correct
+1. make sure photos are ordered correctly. On Mac, select all, "rename", use "img" prefix, start at 1
+1. create new folder called "md" in same as full res images, copy all full res photos into new folder
+1. Open all the photos in "md" folder in preview, select "tools -> adjust size", set to 30 DPI
+1. Create new S3 folder in "benjaminbares.co/photos", should be "#-date"
+1. Copy photos here; MAKE PUBLIC
+1. src-> photos -> gallery, create a new tile
+1. create new path in src->index.js
+1. Create new view for photos in src->photos
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
