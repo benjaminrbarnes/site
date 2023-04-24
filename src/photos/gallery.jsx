@@ -12,6 +12,42 @@ export default function Gallery() {
         <div class="row">
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p24"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/24/md/img19.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p24"><p class="card-text">March 2023 - Pt. 4</p></Link>
+                  <p class="card-text">Hawaii / Half Marathon (Bend)</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p23"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/23/md/img34.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p23"><p class="card-text">March 2023 - Pt. 3</p></Link>
+                  <p class="card-text">Kauai / Hawaii</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p22"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/22/md/img16.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p22"><p class="card-text">March 2023 - Pt. 2</p></Link>
+                  <p class="card-text">Honolulu / Kauai </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p21"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/21/md/img12.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p21"><p class="card-text">March 2023 - Pt. 1</p></Link>
+                  <p class="card-text">Seattle / Pizza / Juno</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
                 <Link to="/photos/p20"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/20-feb2023/md/img12.jpg"/></Link>
                 <div class="card-body">
                   <Link to="/photos/p20"><p class="card-text">Jan & Feb 2023</p></Link>
