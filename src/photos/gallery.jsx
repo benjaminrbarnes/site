@@ -10,7 +10,7 @@ export default function Gallery() {
 
       <nav>
         <div class="row">
-            <div class="col-md-4">
+            {/*<div class="col-md-4">
               <div class="card mb-4 shadow-sm">
                 <Link to="/photos/p25"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/25/md/img21.jpg"/></Link>
                 <div class="card-body">
@@ -63,7 +63,7 @@ export default function Gallery() {
                   <p class="card-text">North GA / Seattle Trip</p>
                 </div>
               </div>
-            </div>
+            </div>*/}
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
                 <Link to="/photos/p19"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/19-dec2022/md/img3.jpg"/></Link>
