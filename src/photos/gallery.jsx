@@ -12,6 +12,15 @@ export default function Gallery() {
         <div class="row">
             <div class="col-md-4">
               <div class="card mb-4 shadow-sm">
+                <Link to="/photos/p25"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/25/md/img21.jpg"/></Link>
+                <div class="card-body">
+                  <Link to="/photos/p25"><p class="card-text">June 2023 - Sept 2023</p></Link>
+                  <p class="card-text">Camping / 4th of July / Cruise / Lake House / DIY / Tahoe</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card mb-4 shadow-sm">
                 <Link to="/photos/p24"><img class="img-fluid" src="https://d3dsxdu5t5tqsc.cloudfront.net/photos/24/md/img19.jpg"/></Link>
                 <div class="card-body">
                   <Link to="/photos/p24"><p class="card-text">March 2023 - Pt. 4</p></Link>

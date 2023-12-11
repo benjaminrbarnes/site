@@ -36,6 +36,7 @@ import P21 from "./photos/p21";
 import P22 from "./photos/p22";
 import P23 from "./photos/p23";
 import P24 from "./photos/p24";
+import P25 from "./photos/p25";
 
 
 const root = ReactDOM.createRoot(
@@ -74,6 +75,7 @@ root.render(
         <Route path="photos/p22" element={<P22 />}/>
         <Route path="photos/p23" element={<P23 />}/>
         <Route path="photos/p24" element={<P24 />}/>
+        <Route path="photos/p25" element={<P25 />}/>
       </Route>
     </Routes>
   </BrowserRouter>
