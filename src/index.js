@@ -8,6 +8,7 @@ import {
 import App from "./App";
 
 import Contact from "./views/contact";
+import Notepad from "./views/notepad";
 
 import Gallery from "./photos/gallery";
 import LateJuly2022 from "./photos/lateJuly2022";
@@ -48,6 +49,7 @@ root.render(
       <Route path="/" element={<App />}>
         <Route path="/" element={<Gallery />}/>
         <Route path="/contact" element={<Contact />}/>
+        <Route path="/notepad" element={<Notepad />}/>
 
         <Route path="photos/p1" element={<P1 />}/>
         <Route path="photos/p2" element={<P2 />}/>
