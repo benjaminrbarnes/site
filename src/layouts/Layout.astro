@@ -39,16 +39,16 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
           <a href="https://www.instagram.com/benjaminbarnes/" target="_blank" class="instagram">@benjaminbarnes</a>
         </div>
         <nav>
-          <a href="/photos">Photos</a>
+          <a href="/photos/">Photos</a>
           <div class="dropdown">
-            <a href="/projects" class="dropdown-toggle">Projects</a>
+            <a href="/projects/" class="dropdown-toggle">Projects</a>
             <div class="dropdown-menu">
               {topLevelProjects.map(project => (
-                <a href={`/projects/${project.slug}`}>{project.data.title}</a>
+                <a href={`/projects/${project.slug}/`}>{project.data.title}</a>
               ))}
             </div>
           </div>
-          <a href="/notepad">Notepad</a>
+          <a href="/notepad/">Notepad</a>
         </nav>
       </div>
     </header>

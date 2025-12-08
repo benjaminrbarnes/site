@@ -23,13 +23,13 @@ const recentAlbums = albums.slice(0, 3);
   <section class="home-section">
     <div class="section-header">
       <h2>Recent Photos</h2>
-      <a href="/photos" class="see-all">See all &rarr;</a>
+      <a href="/photos/" class="see-all">See all &rarr;</a>
     </div>
     <div class="row">
       {recentAlbums.map(album => (
         <div class="col-md-4">
           <div class="card mb-4">
-            <a href={`/photos/${album.slug}`}>
+            <a href={`/photos/${album.slug}/`}>
               <img
                 class="card-img-top"
                 src={album.thumbnail}
@@ -38,7 +38,7 @@ const recentAlbums = albums.slice(0, 3);
               />
             </a>
             <div class="card-body">
-              <a href={`/photos/${album.slug}`}>
+              <a href={`/photos/${album.slug}/`}>
                 <p class="card-title">{album.title}</p>
               </a>
               <p class="card-desc">{album.description}</p>

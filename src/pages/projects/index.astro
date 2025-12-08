@@ -16,7 +16,7 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
     <ul class="project-list">
       {topLevelProjects.map(project => (
         <li>
-          <a href={`/projects/${project.slug}`}>
+          <a href={`/projects/${project.slug}/`}>
             <span class="project-title">{project.data.title}</span>
             {project.data.description && (
               <span class="project-desc">{project.data.description}</span>

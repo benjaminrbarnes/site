@@ -21,7 +21,7 @@ const subPages = allProjects.filter(p => p.data.parent === project.slug);
 
 <Layout title={`${project.data.title} - Ben Barnes`}>
   <nav class="breadcrumb">
-    <a href="/projects">Projects</a>
+    <a href="/projects/">Projects</a>
     <span>/</span>
     <span>{project.data.title}</span>
   </nav>
@@ -36,7 +36,7 @@ const subPages = allProjects.filter(p => p.data.parent === project.slug);
       <ul>
         {subPages.map(page => (
           <li>
-            <a href={`/projects/${page.slug}`}>{page.data.title}</a>
+            <a href={`/projects/${page.slug}/`}>{page.data.title}</a>
           </li>
         ))}
       </ul>
