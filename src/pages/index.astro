@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getVisibleAlbums } from '../data/albums';
+
+const albums = getVisibleAlbums();
+---
+
+<Layout title="Ben Barnes">
+  <p>
+    Photos are separated by roll, not event.<br />
+    Please contact me for full resolution images.
+  </p>
+
+  <div class="row">
+    {albums.map(album => (
+      <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+          <a href={`/photos/${album.slug}`}>
+            <img class="img-fluid" src={album.thumbnail} alt={album.title} />
+          </a>
+          <div class="card-body">
+            <a href={`/photos/${album.slug}`}>
+              <p class="card-text">{album.title}</p>
+            </a>
+            <p class="card-text">{album.description}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .card a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card a:hover {
+    text-decoration: underline;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+</style>

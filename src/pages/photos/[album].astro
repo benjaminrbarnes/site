@@ -1,0 +1,49 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getAllAlbums, getAlbum, getImageUrls } from '../../data/albums';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const albums = getAllAlbums();
+  return albums.map(album => ({
+    params: { album: album.slug },
+  }));
+};
+
+const { album: slug } = Astro.params;
+const album = getAlbum(slug as string);
+
+if (!album) {
+  return Astro.redirect('/');
+}
+
+const images = getImageUrls(album);
+---
+
+<Layout title={`${album.title} - Ben Barnes`}>
+  <div class="photo-album">
+    {images.map(src => (
+      <img
+        class="img-fluid"
+        src={src}
+        alt=""
+        loading="lazy"
+      />
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .photo-album {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .photo-album img {
+    max-height: 1000px;
+    width: auto;
+    max-width: 100%;
+  }
+</style>

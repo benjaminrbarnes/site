@@ -1,7 +1,23 @@
-/node_modules
-/dist
-/.tmp
-/.sass-cache
-/bower_components
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment
+.env
+.env.local
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
 .DS_Store
-  
+Thumbs.db
+
+# Astro
+.astro/
