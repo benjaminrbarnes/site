@@ -66,6 +66,24 @@ Edit `src/data/albums.ts`:
 https://d3dsxdu5t5tqsc.cloudfront.net/photos/[folder]/md/img[N].[ext]
 ```
 
+## Uploading Photos to S3
+Photos are stored in the `benjaminbarnes.co` S3 bucket, partitioned by year:
+```
+s3://benjaminbarnes.co/photos/[YEAR]/[folder]/
+```
+- **2025**: `s3://benjaminbarnes.co/photos/2025/[folder]/`
+- **2026+**: Update the year in the path accordingly
+
+**Upload command** (parallel sync):
+```bash
+aws s3 sync . s3://benjaminbarnes.co/photos/2025/[folder]/ --exclude "*" --include "*.jpg"
+```
+
+**IMPORTANT - Strip GPS data before uploading** (iPhone photos contain location):
+```bash
+exiftool -gps:all= -overwrite_original *.jpg
+```
+
 ## Album Visibility
 - `visible: true` - Shows in gallery grid
 - `visible: false` - Hidden from gallery but still accessible via direct URL

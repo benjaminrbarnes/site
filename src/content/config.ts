@@ -6,7 +6,12 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     date: z.date().optional(),
-    parent: z.string().optional(), // For sub-pages
+    parent: z.string().optional(),
+    costs: z.array(z.object({
+      item: z.string(),
+      cost: z.number(),
+      date: z.string().optional(),
+    })).optional(),
   }),
 });
 

@@ -17,22 +17,34 @@ const { Content } = await project.render();
 // Get sub-pages if this is a parent project
 const allProjects = await getCollection('projects');
 const subPages = allProjects.filter(p => p.data.parent === project.slug);
+
+// Get parent project if this is a sub-page
+const parentProject = project.data.parent
+  ? allProjects.find(p => p.slug === project.data.parent)
+  : null;
+
+// Calculate costs total if present
+const costs = project.data.costs;
+const total = costs ? costs.reduce((sum, item) => sum + item.cost, 0) : 0;
+const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 });
 ---
 
 <Layout title={`${project.data.title} - Ben Barnes`}>
   <nav class="breadcrumb">
     <a href="/projects">Projects</a>
     <span>/</span>
+    {parentProject && (
+      <>
+        <a href={`/projects/${parentProject.slug}`}>{parentProject.data.title}</a>
+        <span>/</span>
+      </>
+    )}
     <span>{project.data.title}</span>
   </nav>
 
-  <article class="project-content">
-    <Content />
-  </article>
-
   {subPages.length > 0 && (
     <section class="sub-pages">
-      <h2>Pages</h2>
+      <h2>Sub-pages</h2>
       <ul>
         {subPages.map(page => (
           <li>
@@ -42,9 +54,41 @@ const subPages = allProjects.filter(p => p.data.parent === project.slug);
       </ul>
     </section>
   )}
+
+  <article class="project-content">
+    <Content />
+
+    {costs && (
+      <div class="costs-table">
+        <p class="costs-total"><strong>Total: {formatCurrency(total)}</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Cost</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {costs.map(row => (
+              <tr>
+                <td>{row.item}</td>
+                <td class="cost">{formatCurrency(row.cost)}</td>
+                <td class="date">{row.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </article>
 </Layout>
 
 <style>
+  article.project-content {
+    font-size: 1.1rem;
+  }
+
   .breadcrumb {
     display: flex;
     gap: 0.5rem;
@@ -73,6 +117,12 @@ const subPages = allProjects.filter(p => p.data.parent === project.slug);
     margin: 2rem 0 1rem 0;
   }
 
+  .project-content :global(h3) {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
   .project-content :global(p) {
     margin: 0 0 1rem 0;
   }
@@ -84,9 +134,9 @@ const subPages = allProjects.filter(p => p.data.parent === project.slug);
   }
 
   .sub-pages {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 1px solid #e0e0e0;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e0e0e0;
   }
 
   .sub-pages h2 {
@@ -109,5 +159,41 @@ const subPages = allProjects.filter(p => p.data.parent === project.slug);
     color: #5a6a8a;
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  .costs-table {
+    margin-top: 1rem;
+  }
+
+  .costs-total {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .costs-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .costs-table th,
+  .costs-table td {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .costs-table th {
+    font-weight: 500;
+    background: #f5f5f5;
+  }
+
+  .costs-table .cost {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .costs-table .date {
+    white-space: nowrap;
+    color: #666;
   }
 </style>
