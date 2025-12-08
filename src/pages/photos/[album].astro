@@ -22,12 +22,13 @@ const images = getImageUrls(album);
 
 <Layout title={`${album.title} - Ben Barnes`}>
   <div class="photo-album">
-    {images.map(src => (
+    {images.map((src, i) => (
       <img
         class="img-fluid"
         src={src}
         alt=""
-        loading="lazy"
+        loading={i < 3 ? "eager" : "lazy"}
+        decoding="async"
       />
     ))}
   </div>

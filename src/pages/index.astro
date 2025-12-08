@@ -30,7 +30,12 @@ const recentAlbums = albums.slice(0, 3);
         <div class="col-md-4">
           <div class="card mb-4">
             <a href={`/photos/${album.slug}`}>
-              <img class="card-img-top" src={album.thumbnail} alt={album.title} />
+              <img
+                class="card-img-top"
+                src={album.thumbnail}
+                alt={album.title}
+                loading="lazy"
+              />
             </a>
             <div class="card-body">
               <a href={`/photos/${album.slug}`}>
