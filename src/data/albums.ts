@@ -7,6 +7,10 @@ export interface Album {
   images: number[];
   ext: string;
   visible: boolean;
+  // For new-style albums with different naming convention
+  filePrefix?: string;  // e.g., '004540640' -> files are 004540640001.jpg, etc.
+  noSubfolder?: boolean; // true = images in folder root, false = images in /md/ subfolder
+  reverseOrder?: boolean; // true = display images in reverse order
 }
 
 // AWS Serverless Image Handler endpoint
@@ -14,15 +18,144 @@ const IMAGE_HANDLER = 'https://d35s6fmxia7g6v.cloudfront.net';
 
 // Helper to build image URLs with automatic resizing
 // width=0 means auto (maintain aspect ratio)
-const img = (path: string, width = 1200) =>
-  `${IMAGE_HANDLER}/fit-in/${width}x0/photos/${path}`;
+const img = (path: string, width = 2400) =>
+  `${IMAGE_HANDLER}/fit-in/${width}x0/filters:quality(90)/photos/${path}`;
 
 // Helper to generate sequential image numbers
 const range = (start: number, end: number): number[] =>
   Array.from({ length: end - start + 1 }, (_, i) => start + i);
 
+// Helper to build thumbnail URLs for new-style albums (3-digit padding: 001, 002, etc.)
+const imgNew = (folder: string, prefix: string, num: number, width = 800) => {
+  const paddedNum = num.toString().padStart(3, '0');
+  return `${IMAGE_HANDLER}/fit-in/${width}x0/filters:quality(90)/photos/${folder}/${prefix}${paddedNum}.jpg`;
+};
+
 export const albums: Album[] = [
-  // Newer albums (currently hidden in gallery - commented out in original)
+  // ========== 2025 Film Albums (newest first) ==========
+  {
+    slug: 'bvi',
+    title: 'May 2025',
+    description: 'BVI',
+    thumbnail: imgNew('2025/new10', '006961160', 13),
+    folder: '2025/new10',
+    images: [...range(1, 22), ...range(24, 37)],
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '006961160',
+    noSubfolder: true,
+  },
+  {
+    slug: 'orchard-skiing-bvi',
+    title: "Oct '24 - May '25",
+    description: 'Orchard + Skiing + BVI',
+    thumbnail: imgNew('2025/new9', '006961150', 10),
+    folder: '2025/new9',
+    images: range(1, 37),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '006961150',
+    noSubfolder: true,
+  },
+  {
+    slug: 'london-3',
+    title: 'Sept 2024',
+    description: 'London pt. 3',
+    thumbnail: imgNew('2025/new8', '005780090', 4),
+    folder: '2025/new8',
+    images: range(1, 37),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '005780090',
+    noSubfolder: true,
+    reverseOrder: true,
+  },
+  {
+    slug: 'london-2',
+    title: 'Sept 2024',
+    description: 'London pt. 2',
+    thumbnail: imgNew('2025/new7', '005780100', 3),
+    folder: '2025/new7',
+    images: range(1, 37),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '005780100',
+    noSubfolder: true,
+    reverseOrder: true,
+  },
+  {
+    slug: 'london-1',
+    title: 'Sept 2024',
+    description: 'London pt. 1',
+    thumbnail: imgNew('2025/new6', '005780080', 10),
+    folder: '2025/new6',
+    images: range(1, 25),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '005780080',
+    noSubfolder: true,
+  },
+  {
+    slug: 'wedding-garden',
+    title: 'June 2024',
+    description: 'Z&E Wedding + Garden',
+    thumbnail: imgNew('2025/new5', '004615660', 10),
+    folder: '2025/new5',
+    images: range(1, 37),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '004615660',
+    noSubfolder: true,
+  },
+  {
+    slug: 'montreal-wedding',
+    title: 'May - June 2024',
+    description: 'Montreal + Z&E Wedding',
+    thumbnail: imgNew('2025/new4', '004615670', 5),
+    folder: '2025/new4',
+    images: range(1, 37),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '004615670',
+    noSubfolder: true,
+  },
+  {
+    slug: 'vegas-montreal',
+    title: 'April - May 2024',
+    description: 'Vegas + Montreal',
+    thumbnail: imgNew('2025/new3', '004615650', 7),
+    folder: '2025/new3',
+    images: range(1, 36),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '004615650',
+    noSubfolder: true,
+  },
+  {
+    slug: 'atl-vegas',
+    title: 'Dec 2023 - April 2024',
+    description: 'ATL + Vegas',
+    thumbnail: imgNew('2025/new2', '004540650', 18),
+    folder: '2025/new2',
+    images: range(1, 37),
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '004540650',
+    noSubfolder: true,
+  },
+  {
+    slug: 'tahoe-ny-la',
+    title: 'Sept 2023 - Dec 2023',
+    description: 'Tahoe / NY / LA',
+    thumbnail: imgNew('2025/new1', '004540640', 32),
+    folder: '2025/new1',
+    images: [1, 2, 3, 4, 7, 9, ...range(12, 37)],
+    ext: 'jpg',
+    visible: true,
+    filePrefix: '004540640',
+    noSubfolder: true,
+  },
+  // ========== Older albums (hidden) ==========
   {
     slug: 'p25',
     title: 'June 2023 - Sept 2023',
@@ -309,9 +442,24 @@ export function getAllAlbums(): Album[] {
 }
 
 export function getImageUrls(album: Album): string[] {
-  return album.images.map(
-    num => img(`${album.folder}/md/img${num}.${album.ext}`)
-  );
+  let images = album.images;
+
+  // Reverse order if specified
+  if (album.reverseOrder) {
+    images = [...images].reverse();
+  }
+
+  return images.map(num => {
+    if (album.filePrefix) {
+      // New-style naming: prefix + 3-digit padded number (001, 002, etc.)
+      const paddedNum = num.toString().padStart(3, '0');
+      const subfolder = album.noSubfolder ? '' : '/md';
+      return img(`${album.folder}${subfolder}/${album.filePrefix}${paddedNum}.${album.ext}`);
+    } else {
+      // Old-style naming: img + number
+      return img(`${album.folder}/md/img${num}.${album.ext}`);
+    }
+  });
 }
 
 // For thumbnails in the gallery grid (smaller size)
