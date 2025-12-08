@@ -55,14 +55,21 @@ Photo dump beloww
 }
 .lightbox-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 15px;
+  right: 15px;
   color: white;
   font-size: 32px;
   cursor: pointer;
-  z-index: 10001;
-  padding: 10px;
+  z-index: 10002;
+  padding: 15px;
   line-height: 1;
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .lightbox-nav {
   position: absolute;
@@ -96,8 +103,8 @@ Photo dump beloww
   -webkit-tap-highlight-color: transparent;
 }
 @media (max-width: 640px) {
-  .lightbox-nav { width: 60px; font-size: 28px; }
-  .lightbox-close { font-size: 28px; top: 10px; right: 10px; }
+  .lightbox-nav { width: 50px; font-size: 24px; }
+  .lightbox-close { font-size: 24px; top: 10px; right: 10px; width: 44px; height: 44px; }
 }
 </style>
 
