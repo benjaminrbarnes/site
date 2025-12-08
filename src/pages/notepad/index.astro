@@ -18,7 +18,7 @@ const sortedPosts = posts.sort((a, b) =>
     <ul class="post-list">
       {sortedPosts.map(post => (
         <li>
-          <a href={`/notepad/${post.slug}/`}>
+          <a href={`/notepad/${post.slug}`}>
             <span class="post-title">{post.data.title}</span>
             <span class="post-date">
               {post.data.date.toLocaleDateString('en-US', {
