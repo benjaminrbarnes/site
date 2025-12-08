@@ -6,7 +6,7 @@ date: 2024-01-01
 
 # DIY Sauna
 
-Photo dump beloww
+Photo dump below
 
 <style>
 .photo-grid {
