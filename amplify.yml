@@ -18,6 +18,9 @@ frontend:
     paths:
       - node_modules/**/*
   customRules:
+    - source: '/<*>'
+      target: '/<*>.html'
+      status: '404-200'
     - source: 'https://benjaminbarnes.co'
       target: 'https://www.benjaminbarnes.co'
       status: '302'
