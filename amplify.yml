@@ -17,7 +17,3 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
-  customRules:
-    - source: 'https://benjaminbarnes.co'
-      target: 'https://www.benjaminbarnes.co'
-      status: '302'
