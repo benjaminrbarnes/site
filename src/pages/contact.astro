@@ -3,9 +3,45 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Contact - Ben Barnes">
-  <p>
-    <b>Email</b> - benjaminrbarnes@gmail.com<br />
-    <b>Instagram</b> - <a href="https://www.instagram.com/benjaminbarnes/">@benjaminbarnes</a><br />
-    <b>LinkedIn</b> - <a href="https://www.linkedin.com/in/benjaminrbarnes/">Benjamin Barnes</a>
-  </p>
+  <div class="contact">
+    <div class="contact-item">
+      <span class="label">Email</span>
+      <a href="mailto:benjaminrbarnes@gmail.com">benjaminrbarnes@gmail.com</a>
+    </div>
+    <div class="contact-item">
+      <span class="label">Instagram</span>
+      <a href="https://www.instagram.com/benjaminbarnes/" target="_blank">@benjaminbarnes</a>
+    </div>
+    <div class="contact-item">
+      <span class="label">LinkedIn</span>
+      <a href="https://www.linkedin.com/in/benjaminrbarnes/" target="_blank">Benjamin Barnes</a>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .contact {
+    max-width: 400px;
+  }
+
+  .contact-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #222;
+  }
+
+  .contact-item:first-child {
+    border-top: 1px solid #222;
+  }
+
+  .label {
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .contact-item a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

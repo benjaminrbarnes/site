@@ -6,23 +6,18 @@ const albums = getVisibleAlbums();
 ---
 
 <Layout title="Ben Barnes">
-  <p>
-    Photos are separated by roll, not event.<br />
-    Please contact me for full resolution images.
-  </p>
-
   <div class="row">
     {albums.map(album => (
       <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
+        <div class="card mb-4">
           <a href={`/photos/${album.slug}`}>
-            <img class="img-fluid" src={album.thumbnail} alt={album.title} />
+            <img class="card-img-top" src={album.thumbnail} alt={album.title} />
           </a>
           <div class="card-body">
             <a href={`/photos/${album.slug}`}>
-              <p class="card-text">{album.title}</p>
+              <p class="card-title">{album.title}</p>
             </a>
-            <p class="card-text">{album.description}</p>
+            <p class="card-desc">{album.description}</p>
           </div>
         </div>
       </div>
@@ -31,16 +26,43 @@ const albums = getVisibleAlbums();
 </Layout>
 
 <style>
-  .card a {
-    color: inherit;
-    text-decoration: none;
+  .card {
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
 
-  .card a:hover {
-    text-decoration: underline;
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: #444;
+  }
+
+  .card-img-top {
+    width: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  .card:hover .card-img-top {
+    transform: scale(1.02);
   }
 
   .card-body {
     padding: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+    margin: 0 0 0.25rem 0;
+    color: #7B8FAE;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .card-desc {
+    font-size: 0.9rem;
+    color: #888;
+    margin: 0;
   }
 </style>
