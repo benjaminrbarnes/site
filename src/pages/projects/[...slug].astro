@@ -1,0 +1,113 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+};
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+
+// Get sub-pages if this is a parent project
+const allProjects = await getCollection('projects');
+const subPages = allProjects.filter(p => p.data.parent === project.slug);
+---
+
+<Layout title={`${project.data.title} - Ben Barnes`}>
+  <nav class="breadcrumb">
+    <a href="/projects">Projects</a>
+    <span>/</span>
+    <span>{project.data.title}</span>
+  </nav>
+
+  <article class="project-content">
+    <Content />
+  </article>
+
+  {subPages.length > 0 && (
+    <section class="sub-pages">
+      <h2>Pages</h2>
+      <ul>
+        {subPages.map(page => (
+          <li>
+            <a href={`/projects/${page.slug}`}>{page.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .breadcrumb {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    color: #666;
+  }
+
+  .breadcrumb a {
+    color: #5a6a8a;
+  }
+
+  .project-content {
+    line-height: 1.7;
+  }
+
+  .project-content :global(h1) {
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .project-content :global(h2) {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 2rem 0 1rem 0;
+  }
+
+  .project-content :global(p) {
+    margin: 0 0 1rem 0;
+  }
+
+  .project-content :global(img) {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .sub-pages {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .sub-pages h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 0 1rem 0;
+  }
+
+  .sub-pages ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sub-pages li {
+    padding: 0.5rem 0;
+  }
+
+  .sub-pages a {
+    color: #5a6a8a;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

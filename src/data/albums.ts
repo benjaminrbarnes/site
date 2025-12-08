@@ -11,6 +11,7 @@ export interface Album {
   filePrefix?: string;  // e.g., '004540640' -> files are 004540640001.jpg, etc.
   noSubfolder?: boolean; // true = images in folder root, false = images in /md/ subfolder
   reverseOrder?: boolean; // true = display images in reverse order
+  paddingLength?: number; // digit padding for image numbers (default: 3)
 }
 
 // AWS Serverless Image Handler endpoint
@@ -31,8 +32,80 @@ const imgNew = (folder: string, prefix: string, num: number, width = 800) => {
   return `${IMAGE_HANDLER}/fit-in/${width}x0/filters:quality(90)/photos/${folder}/${prefix}${paddedNum}.jpg`;
 };
 
+// Helper for thumbnails with custom padding (e.g., 7-digit for Ricoh GR files)
+const imgPadded = (folder: string, prefix: string, num: number, padding: number, width = 800) => {
+  const paddedNum = num.toString().padStart(padding, '0');
+  return `${IMAGE_HANDLER}/fit-in/${width}x0/filters:quality(90)/photos/${folder}/${prefix}${paddedNum}.jpg`;
+};
+
 export const albums: Album[] = [
-  // ========== 2025 Film Albums (newest first) ==========
+  // ========== 2025 Austria Trip (newest first) ==========
+  {
+    slug: 'austria-day5',
+    title: 'Austria Pt. 5',
+    description: 'September 2025',
+    thumbnail: imgPadded('2025/austria/day5', 'R', 1037, 7),
+    folder: '2025/austria/day5',
+    images: [951,953,964,967,968,971,990,993,994,996,998,999,1000,1002,1003,1006,1007,1013,1022,1028,1034,1035,1036,1037,1038,1039,1041,1042,1044,1046,1055,1064,1068,1069,1072,1073,1074,1075,1077,1079,1081,1082,1085,1087,1090,1095,1096],
+    ext: 'jpg',
+    visible: true,
+    filePrefix: 'R',
+    noSubfolder: true,
+    paddingLength: 7,
+  },
+  {
+    slug: 'austria-day4',
+    title: 'Austria Pt. 4',
+    description: 'September 2025',
+    thumbnail: imgPadded('2025/austria/day4', 'R', 825, 7),
+    folder: '2025/austria/day4',
+    images: [672,682,684,686,688,695,699,706,718,729,735,742,745,747,748,752,753,761,762,764,767,770,773,775,776,781,782,783,785,796,807,821,825,826,830,833,836,837,838,840,841,843,846,852,857,863,867,869,870,875,878,882,884,888,891,894,897,899,904,905,912,913,914,917,918,921,922,924,925,926,927,933,934],
+    ext: 'jpg',
+    visible: true,
+    filePrefix: 'R',
+    noSubfolder: true,
+    paddingLength: 7,
+  },
+  {
+    slug: 'austria-day3',
+    title: 'Austria Pt. 3',
+    description: 'September 2025',
+    thumbnail: imgPadded('2025/austria/day3', 'R', 560, 7),
+    folder: '2025/austria/day3',
+    images: [478,482,486,495,501,516,519,522,534,538,539,542,544,546,551,556,560,567,570,581,582,584,600,603,605,609,613,614,615,628,634,636,638,640,641,643,657,667,669],
+    ext: 'jpg',
+    visible: true,
+    filePrefix: 'R',
+    noSubfolder: true,
+    paddingLength: 7,
+  },
+  {
+    slug: 'austria-day2',
+    title: 'Austria Pt. 2',
+    description: 'September 2025',
+    thumbnail: imgPadded('2025/austria/day2', 'R', 340, 7),
+    folder: '2025/austria/day2',
+    images: [255,256,257,258,259,261,264,278,279,280,281,282,284,285,289,290,291,292,294,295,296,297,303,310,312,313,316,318,320,321,322,324,325,329,333,340,341,356,357,362,365,366,368,369,370,371,372,373,375,378,382,386,387,388,392,393,405,413,420,426,430,432,437,445,447,449,454,464,467,469,472,477],
+    ext: 'jpg',
+    visible: true,
+    filePrefix: 'R',
+    noSubfolder: true,
+    paddingLength: 7,
+  },
+  {
+    slug: 'austria-day1',
+    title: 'Austria Pt. 1',
+    description: 'September 2025',
+    thumbnail: imgPadded('2025/austria/day1', 'R', 145, 7),
+    folder: '2025/austria/day1',
+    images: [64,66,74,81,86,88,92,95,97,99,100,109,116,122,123,128,129,130,131,132,133,137,138,139,141,145,150,170,171,176,177,180,186,189,196,197,207,208,210,217,230,234,236,237,243],
+    ext: 'jpg',
+    visible: true,
+    filePrefix: 'R',
+    noSubfolder: true,
+    paddingLength: 7,
+  },
+  // ========== 2025 Film Albums ==========
   {
     slug: 'bvi',
     title: 'May 2025',
@@ -451,8 +524,9 @@ export function getImageUrls(album: Album): string[] {
 
   return images.map(num => {
     if (album.filePrefix) {
-      // New-style naming: prefix + 3-digit padded number (001, 002, etc.)
-      const paddedNum = num.toString().padStart(3, '0');
+      // New-style naming: prefix + padded number
+      const padding = album.paddingLength ?? 3;
+      const paddedNum = num.toString().padStart(padding, '0');
       const subfolder = album.noSubfolder ? '' : '/md';
       return img(`${album.folder}${subfolder}/${album.filePrefix}${paddedNum}.${album.ext}`);
     } else {

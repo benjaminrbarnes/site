@@ -1,9 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
+
 interface Props {
   title?: string;
 }
 
 const { title = 'Ben Barnes' } = Astro.props;
+
+const projects = await getCollection('projects');
+const topLevelProjects = projects.filter(p => !p.data.parent);
 ---
 
 <!doctype html>
@@ -12,7 +17,7 @@ const { title = 'Ben Barnes' } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Ben Barnes personal website" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#FAF9F6" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/logo192.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,9 +39,16 @@ const { title = 'Ben Barnes' } = Astro.props;
           <a href="https://www.instagram.com/benjaminbarnes/" target="_blank" class="instagram">@benjaminbarnes</a>
         </div>
         <nav>
-          <a href="/">Photos</a>
+          <a href="/photos">Photos</a>
+          <div class="dropdown">
+            <a href="/projects" class="dropdown-toggle">Projects</a>
+            <div class="dropdown-menu">
+              {topLevelProjects.map(project => (
+                <a href={`/projects/${project.slug}`}>{project.data.title}</a>
+              ))}
+            </div>
+          </div>
           <a href="/notepad">Notepad</a>
-          <a href="/contact">Contact</a>
         </nav>
       </div>
     </header>
@@ -45,7 +57,7 @@ const { title = 'Ben Barnes' } = Astro.props;
     </main>
     <footer>
       <div class="container">
-        <p>&copy; {new Date().getFullYear()}</p>
+        <p>&copy; {new Date().getFullYear()} &middot; <a href="mailto:benjaminrbarnes@gmail.com">benjaminrbarnes@gmail.com</a></p>
       </div>
     </footer>
   </body>
@@ -58,13 +70,13 @@ const { title = 'Ben Barnes' } = Astro.props;
 
   body {
     font-family: 'EB Garamond', Georgia, serif;
-    background: #0a0a0a;
-    color: #e5e5e5;
+    background: #FAF9F6;
+    color: #2a2a2a;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
   }
 
   main.container {
@@ -74,19 +86,19 @@ const { title = 'Ben Barnes' } = Astro.props;
   }
 
   a {
-    color: #e5e5e5;
+    color: #2a2a2a;
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   a:hover {
-    color: #fff;
+    color: #000;
     text-decoration: none;
   }
 
   header {
     padding: 2rem 0;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #e0e0e0;
   }
 
   header .container {
@@ -127,22 +139,24 @@ const { title = 'Ben Barnes' } = Astro.props;
 
   .instagram {
     font-size: 1rem;
-    color: #7B8FAE;
+    color: #5a6a8a;
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
 
   .instagram:hover {
-    color: #9EB1D4;
+    color: #3a4a6a;
   }
 
   nav {
     display: flex;
     gap: 2rem;
+    align-items: center;
   }
 
-  nav a {
+  nav > a,
+  nav .dropdown-toggle {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -150,30 +164,81 @@ const { title = 'Ben Barnes' } = Astro.props;
     transition: opacity 0.2s ease;
   }
 
-  nav a:hover {
+  nav > a:hover,
+  nav .dropdown-toggle:hover {
     opacity: 1;
+  }
+
+  .dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.5rem 0;
+    min-width: 140px;
+    margin-top: 0.5rem;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -0.5rem;
+    left: 0;
+    right: 0;
+    height: 0.5rem;
+  }
+
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+  .dropdown-menu a {
+    display: block;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    text-transform: none;
+    letter-spacing: normal;
+    opacity: 0.7;
+  }
+
+  .dropdown-menu a:hover {
+    opacity: 1;
+    background: #f5f5f5;
   }
 
   footer {
     padding: 2rem 0;
-    border-top: 1px solid #222;
+    border-top: 1px solid #e0e0e0;
     text-align: center;
     opacity: 0.5;
     font-size: 0.85rem;
   }
 
-  /* Card overrides for dark theme */
+  /* Card overrides for light theme */
   .card {
-    background: #141414;
-    border: 1px solid #222;
+    background: #fff;
+    border: 1px solid #e8e8e8;
     border-radius: 8px;
     overflow: hidden;
     transition: transform 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
   .card:hover {
     transform: translateY(-4px);
-    border-color: #333;
+    border-color: #d0d0d0;
   }
 
   .card-body {
@@ -181,12 +246,12 @@ const { title = 'Ben Barnes' } = Astro.props;
   }
 
   .card-text {
-    color: #e5e5e5;
+    color: #2a2a2a;
     margin-bottom: 0.5rem;
   }
 
   .card-text:last-child {
-    color: #888;
+    color: #666;
     font-size: 0.85rem;
   }
 
