@@ -9,6 +9,7 @@ const recentAlbums = albums.slice(0, 3);
 <Layout title="Ben Barnes">
   <section class="about-section">
     <p>Photography, tech, DIY, carpentry, fitness.</p>
+    <a href="https://www.instagram.com/benjaminbarnes/" target="_blank" class="instagram">@benjaminbarnes</a>
   </section>
 
   <section class="home-section">
@@ -62,7 +63,17 @@ const recentAlbums = albums.slice(0, 3);
   .about-section p {
     color: #444;
     line-height: 1.6;
-    margin: 0;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .about-section .instagram {
+    color: #5a6a8a;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-section .instagram:hover {
+    color: #3a4a6a;
   }
 
   .home-section {
