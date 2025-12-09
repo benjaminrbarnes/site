@@ -9,7 +9,7 @@ const albums = getVisibleAlbums();
   <h1 class="page-title">Photos</h1>
   <div class="row">
     {albums.map(album => (
-      <div class="col-md-4">
+      <div class="col-6 col-md-4">
         <div class="card mb-4">
           <a href={`/gallery/${album.slug}`}>
             <img
@@ -32,6 +32,17 @@ const albums = getVisibleAlbums();
 </Layout>
 
 <style>
+  @media (max-width: 767px) {
+    .row {
+      margin-left: -8px;
+      margin-right: -8px;
+    }
+    .row > [class*="col-"] {
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+  }
+
   .page-title {
     font-size: 1.5rem;
     font-weight: 500;

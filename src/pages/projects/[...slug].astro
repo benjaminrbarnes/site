@@ -44,7 +44,6 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
 
   {subPages.length > 0 && (
     <section class="sub-pages">
-      <h2>Sub-pages</h2>
       <ul>
         {subPages.map(page => (
           <li>
@@ -92,7 +91,7 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
   .breadcrumb {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     font-size: 1rem;
     color: #666;
   }
@@ -134,15 +133,9 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
   }
 
   .sub-pages {
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid #e0e0e0;
-  }
-
-  .sub-pages h2 {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin: 0 0 1rem 0;
   }
 
   .sub-pages ul {
@@ -152,7 +145,7 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
   }
 
   .sub-pages li {
-    padding: 0.5rem 0;
+    padding: 0.25rem 0;
   }
 
   .sub-pages a {

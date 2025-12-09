@@ -39,16 +39,17 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
           <a href="https://www.instagram.com/benjaminbarnes/" target="_blank" class="instagram">@benjaminbarnes</a>
         </div>
         <nav>
+          <a href="/">Home</a>
           <a href="/gallery">Photos</a>
           <div class="dropdown">
-            <a href="/projects" class="dropdown-toggle">Projects</a>
+            <button type="button" class="dropdown-toggle">Projects</button>
             <div class="dropdown-menu">
               {topLevelProjects.map(project => (
                 <a href={`/projects/${project.slug}`}>{project.data.title}</a>
               ))}
             </div>
           </div>
-          <a href="/notepad">Notepad</a>
+          <!-- <a href="/notepad">Notepad</a> -->
         </nav>
       </div>
     </header>
@@ -162,6 +163,12 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
     letter-spacing: 0.1em;
     opacity: 0.7;
     transition: opacity 0.2s ease;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    color: inherit;
+    cursor: pointer;
   }
 
   nav > a:hover,
@@ -200,7 +207,7 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
     height: 0.5rem;
   }
 
-  .dropdown:hover .dropdown-menu {
+  .dropdown.open .dropdown-menu {
     display: block;
   }
 
@@ -265,3 +272,19 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
     to { opacity: 1; }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dropdown = document.querySelector('.dropdown');
+    const toggle = dropdown?.querySelector('.dropdown-toggle');
+
+    toggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+      dropdown?.classList.remove('open');
+    });
+  });
+</script>
