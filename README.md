@@ -39,3 +39,7 @@ src/
 - **CloudFront Distribution ID**: `E1CR178U2NK86M`
 
 See `CLAUDE.md` for detailed instructions on adding new photos.
+
+---
+
+_Test update - 2026-02-06_
