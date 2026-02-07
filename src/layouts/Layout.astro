@@ -40,13 +40,13 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
         </div>
         <nav>
           <a href="/">Home</a>
-          <a href="/gallery">Photos</a>
           <div class="dropdown">
             <button type="button" class="dropdown-toggle">Projects</button>
             <div class="dropdown-menu">
               {topLevelProjects.map(project => (
                 <a href={`/projects/${project.slug}`}>{project.data.title}</a>
               ))}
+              <a href="/gallery">Photos</a>
             </div>
           </div>
           <!-- <a href="/notepad">Notepad</a> -->

@@ -1,5 +1,5 @@
 ---
-title: Fitness
+title: Running
 description: Races and running
 date: 2025-01-01
 ---
