@@ -7,7 +7,7 @@ date: 2025-01-01
 # Races
 
 - **2026**
-    - 2/7 - BeltLine Westside 10K
+    - 2/7 - BeltLine Westside 10K - 46:29 - 7:29/mi
     - 3/1 - Atlanta Half Marathon
     - 3/29 - ATC Members 10K
     - 6/13 - Cotswold Way Ultra Challenge 100km
