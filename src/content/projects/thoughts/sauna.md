@@ -1,12 +1,15 @@
 ---
 title: Sauna
 description: Building a backyard sauna
-date: 2024-01-01
+date: 2024-12-01
+parent: thoughts
 ---
 
 # DIY Sauna
 
-Photo dump below
+In December 2024, I started building my own sauna. Below is a photo dump, and detailed cost breakdown.
+
+[See detailed costs →](/projects/thoughts/sauna/costs)
 
 <style>
 .photo-grid {

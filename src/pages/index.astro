@@ -1,16 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { getVisibleAlbums } from '../data/albums';
+import { getCollection } from 'astro:content';
 
 const albums = getVisibleAlbums();
 const recentAlbums = albums.slice(0, 3);
+
+// Get all projects
+const allProjects = await getCollection('projects');
+const thoughtsProject = allProjects.find(p => p.slug === 'thoughts');
+const thoughtsArticles = allProjects.filter(p => p.data.parent === 'thoughts').sort((a, b) => {
+  if (a.data.date && b.data.date) {
+    return b.data.date.getTime() - a.data.date.getTime(); // newest first
+  }
+  return 0;
+});
+const otherProjects = allProjects.filter(p => !p.data.parent && p.slug !== 'thoughts');
 ---
 
 <Layout title="Ben Barnes">
   <section class="about-section">
+    <h2>Thoughts</h2>
     <ul class="project-links">
-      <li><a href="/projects/sauna">Sauna</a></li>
-      <li><a href="/projects/fitness">Running</a></li>
+      {thoughtsArticles.map(article => (
+        <li>
+          <a href={`/projects/${article.slug}`}>{article.data.title}</a>
+          {article.data.date && (
+            <span class="child-date">{article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <h2>Etc.</h2>
+    <ul class="project-links">
+      {otherProjects.map(project => (
+        <li>
+          <a href={`/projects/${project.slug}`}>{project.data.title}</a>
+        </li>
+      ))}
       <li><a href="/gallery">Photos</a></li>
     </ul>
   </section>
@@ -63,6 +91,17 @@ const recentAlbums = albums.slice(0, 3);
     border-bottom: 1px solid #e0e0e0;
   }
 
+  .about-section h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0 0 0.75rem 0;
+    color: #2a2a2a;
+  }
+
+  .about-section h2:not(:first-child) {
+    margin-top: 2rem;
+  }
+
   .about-section p {
     color: #444;
     line-height: 1.6;
@@ -72,7 +111,7 @@ const recentAlbums = albums.slice(0, 3);
   .about-section .project-links {
     list-style: disc;
     padding-left: 1.25rem;
-    margin: 0.5rem 0 0 0;
+    margin: 0 0 0 0;
   }
 
   .about-section .project-links li {
@@ -87,6 +126,17 @@ const recentAlbums = albums.slice(0, 3);
 
   .about-section .project-links a:hover {
     color: #3a4a6a;
+  }
+
+  .about-section .project-links li {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .child-date {
+    color: #999;
+    font-size: 0.9rem;
+    white-space: nowrap;
   }
 
   .home-section {

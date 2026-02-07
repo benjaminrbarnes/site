@@ -1,7 +1,7 @@
 ---
 title: Costs
 description: Sauna build expenses
-parent: sauna
+parent: thoughts/sauna
 costs:
   - item: Camo Deck blocks
     cost: 70

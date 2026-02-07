@@ -18,10 +18,18 @@ const { Content } = await project.render();
 const allProjects = await getCollection('projects');
 const subPages = allProjects.filter(p => p.data.parent === project.slug);
 
-// Get parent project if this is a sub-page
-const parentProject = project.data.parent
-  ? allProjects.find(p => p.slug === project.data.parent)
-  : null;
+// Build breadcrumb trail by walking up the parent chain
+const breadcrumbs = [];
+let currentProject = project;
+while (currentProject.data.parent) {
+  const parent = allProjects.find(p => p.slug === currentProject.data.parent);
+  if (parent) {
+    breadcrumbs.unshift(parent);
+    currentProject = parent;
+  } else {
+    break;
+  }
+}
 
 // Calculate costs total if present
 const costs = project.data.costs;
@@ -33,14 +41,17 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
   <nav class="breadcrumb">
     <a href="/projects">Projects</a>
     <span>/</span>
-    {parentProject && (
+    {breadcrumbs.map(parent => (
       <>
-        <a href={`/projects/${parentProject.slug}`}>{parentProject.data.title}</a>
+        <a href={`/projects/${parent.slug}`}>{parent.data.title}</a>
         <span>/</span>
       </>
-    )}
+    ))}
     <span>{project.data.title}</span>
   </nav>
+
+  <article class="project-content">
+    <Content />
 
   {subPages.length > 0 && (
     <section class="sub-pages">
@@ -48,14 +59,14 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
         {subPages.map(page => (
           <li>
             <a href={`/projects/${page.slug}`}>{page.data.title}</a>
+            {page.data.date && (
+              <span class="sub-page-date">{page.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+            )}
           </li>
         ))}
       </ul>
     </section>
   )}
-
-  <article class="project-content">
-    <Content />
 
     {costs && (
       <div class="costs-table">
@@ -85,7 +96,7 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
 
 <style>
   article.project-content {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
 
   .breadcrumb {
@@ -124,18 +135,34 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
 
   .project-content :global(p) {
     margin: 0 0 1rem 0;
+    font-size: 1.15rem;
+  }
+
+  .project-content :global(ul),
+  .project-content :global(ol) {
+    font-size: 1.15rem;
   }
 
   .project-content :global(img) {
-    max-width: 100%;
+    max-width: 700px;
+    width: 100%;
+    display: block;
+    margin: 2rem auto;
     border-radius: 8px;
-    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  @media (max-width: 768px) {
+    .project-content :global(img) {
+      max-width: 100%;
+    }
   }
 
   .sub-pages {
+    margin-top: 2rem;
     margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #e0e0e0;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
   }
 
   .sub-pages ul {
@@ -145,13 +172,23 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
   }
 
   .sub-pages li {
-    padding: 0.25rem 0;
+    padding: 0.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
   }
 
   .sub-pages a {
     color: #5a6a8a;
     text-decoration: underline;
     text-underline-offset: 3px;
+  }
+
+  .sub-page-date {
+    color: #666;
+    font-size: 0.9rem;
+    white-space: nowrap;
   }
 
   .costs-table {
