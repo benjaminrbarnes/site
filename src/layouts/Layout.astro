@@ -271,6 +271,33 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
   @keyframes fadeIn {
     to { opacity: 1; }
   }
+
+  @media (max-width: 768px) {
+    body {
+      font-size: 2rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+    }
+
+    .instagram {
+      font-size: 1.4rem;
+    }
+
+    nav > a,
+    nav .dropdown-toggle {
+      font-size: 1.2rem;
+    }
+
+    .dropdown-menu a {
+      font-size: 1.1rem;
+    }
+
+    footer {
+      font-size: 1.1rem;
+    }
+  }
 </style>
 
 <script>
