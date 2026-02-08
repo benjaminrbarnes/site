@@ -153,6 +153,31 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
   }
 
   @media (max-width: 768px) {
+    article.project-content {
+      font-size: 1.3rem;
+    }
+
+    .project-content :global(h1) {
+      font-size: 2rem;
+    }
+
+    .project-content :global(h2) {
+      font-size: 1.6rem;
+    }
+
+    .project-content :global(h3) {
+      font-size: 1.35rem;
+    }
+
+    .project-content :global(p) {
+      font-size: 1.3rem;
+    }
+
+    .project-content :global(ul),
+    .project-content :global(ol) {
+      font-size: 1.3rem;
+    }
+
     .project-content :global(img) {
       max-width: 100%;
     }
