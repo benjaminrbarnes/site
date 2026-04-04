@@ -1,17 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getVisibleAlbums } from '../data/albums';
 import { getCollection } from 'astro:content';
 
-const albums = getVisibleAlbums();
-const recentAlbums = albums.slice(0, 3);
-
-// Get all projects
 const allProjects = await getCollection('projects');
-const thoughtsProject = allProjects.find(p => p.slug === 'thoughts');
 const thoughtsArticles = allProjects.filter(p => p.data.parent === 'thoughts').sort((a, b) => {
   if (a.data.date && b.data.date) {
-    return b.data.date.getTime() - a.data.date.getTime(); // newest first
+    return b.data.date.getTime() - a.data.date.getTime();
   }
   return 0;
 });
@@ -19,220 +13,74 @@ const otherProjects = allProjects.filter(p => !p.data.parent && p.slug !== 'thou
 ---
 
 <Layout title="Ben Barnes">
-  <section class="about-section">
-    <h2>Thoughts</h2>
-    <ul class="project-links">
+  <section class="writing-section">
+    <ul class="writing-list">
       {thoughtsArticles.map(article => (
         <li>
           <a href={`/projects/${article.slug}`}>{article.data.title}</a>
           {article.data.date && (
-            <span class="child-date">{article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
+            <span class="date">{article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
           )}
         </li>
       ))}
     </ul>
+  </section>
 
-    <h2>Etc.</h2>
-    <ul class="project-links">
+  <section class="other-section">
+    <h2>Projects</h2>
+    <ul class="writing-list">
       {otherProjects.map(project => (
         <li>
           <a href={`/projects/${project.slug}`}>{project.data.title}</a>
         </li>
       ))}
-      <li><a href="/gallery">Photos</a></li>
     </ul>
-  </section>
-
-  <section class="home-section">
-    <div class="section-header">
-      <h2>Recent Photos</h2>
-      <a href="/gallery" class="see-all">See all &rarr;</a>
-    </div>
-    <div class="row">
-      {recentAlbums.map(album => (
-        <div class="col-6 col-md-4">
-          <div class="card mb-4">
-            <a href={`/gallery/${album.slug}`}>
-              <img
-                class="card-img-top"
-                src={album.thumbnail}
-                alt={album.title}
-                loading="lazy"
-              />
-            </a>
-            <div class="card-body">
-              <a href={`/gallery/${album.slug}`}>
-                <p class="card-title">{album.title}</p>
-              </a>
-              <p class="card-desc">{album.description}</p>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
   </section>
 </Layout>
 
 <style>
-  @media (max-width: 767px) {
-    .row {
-      margin-left: -8px;
-      margin-right: -8px;
-    }
-    .row > [class*="col-"] {
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-  }
-
-  .about-section {
+  .writing-section {
     margin-bottom: 3rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid #e0e0e0;
   }
 
-  .about-section h2 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin: 0 0 0.75rem 0;
-    color: #2a2a2a;
+  .writing-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  .about-section h2:not(:first-child) {
-    margin-top: 2rem;
-  }
-
-  .about-section p {
-    color: #444;
-    line-height: 1.6;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .about-section .project-links {
-    list-style: disc;
-    padding-left: 1.25rem;
-    margin: 0 0 0 0;
-  }
-
-  .about-section .project-links li {
-    margin-bottom: 0.25rem;
-  }
-
-  .about-section .project-links a {
-    color: #5a6a8a;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  .about-section .project-links a:hover {
-    color: #3a4a6a;
-  }
-
-  .about-section .project-links li {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .child-date {
-    color: #999;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-
-  .home-section {
-    margin-bottom: 3rem;
-  }
-
-  .section-header {
+  .writing-list li {
+    padding: 0.4rem 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
+    align-items: baseline;
+    gap: 1rem;
   }
 
-  .section-header h2 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    margin: 0;
-    color: #2a2a2a;
-  }
-
-  .see-all {
-    color: #5a6a8a;
-    font-size: 1.1rem;
-  }
-
-  .card {
-    background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  }
-
-  .card:hover {
-    transform: translateY(-4px);
-    border-color: #d0d0d0;
-  }
-
-  .card-img-top {
-    width: 100%;
-    aspect-ratio: 3 / 4;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-
-  .card:hover .card-img-top {
-    transform: scale(1.02);
-  }
-
-  .card-body {
-    padding: 1rem;
-  }
-
-  .card-title {
-    font-size: 1.25rem;
-    margin: 0 0 0.25rem 0;
+  .writing-list a {
     color: #5a6a8a;
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
-  .card-desc {
-    font-size: 1.05rem;
-    color: #666;
-    margin: 0;
+  .writing-list a:hover {
+    color: #3a4a6a;
   }
 
-  @media (max-width: 768px) {
-    .about-section h2 {
-      font-size: 2rem;
-    }
+  .date {
+    color: #999;
+    font-size: 0.9em;
+    white-space: nowrap;
+  }
 
-    .about-section p,
-    .about-section .project-links {
-      font-size: 1.6rem;
-    }
-
-    .child-date {
-      font-size: 1.3rem;
-    }
-
-    .section-header h2 {
-      font-size: 2rem;
-    }
-
-    .see-all {
-      font-size: 1.5rem;
-    }
-
-    .card-title {
-      font-size: 1.6rem;
-    }
-
-    .card-desc {
-      font-size: 1.4rem;
-    }
+  .other-section h2 {
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    margin: 0 0 0.75rem 0;
   }
 </style>

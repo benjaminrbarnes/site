@@ -39,7 +39,7 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
 
 <Layout title={`${project.data.title} - Ben Barnes`}>
   <nav class="breadcrumb">
-    <a href="/projects">Projects</a>
+    <a href="/">Writing</a>
     <span>/</span>
     {breadcrumbs.map(parent => (
       <>
@@ -153,54 +153,8 @@ const formatCurrency = (n: number) => n.toLocaleString('en-US', { style: 'curren
   }
 
   @media (max-width: 768px) {
-    article.project-content {
-      font-size: 1.6rem;
-    }
-
-    .breadcrumb {
-      font-size: 1.3rem;
-    }
-
-    .project-content :global(h1) {
-      font-size: 2.4rem;
-    }
-
-    .project-content :global(h2) {
-      font-size: 1.9rem;
-    }
-
-    .project-content :global(h3) {
-      font-size: 1.7rem;
-    }
-
-    .project-content :global(p) {
-      font-size: 1.6rem;
-    }
-
-    .project-content :global(ul),
-    .project-content :global(ol) {
-      font-size: 1.6rem;
-    }
-
     .project-content :global(img) {
       max-width: 100%;
-    }
-
-    .sub-pages a {
-      font-size: 1.4rem;
-    }
-
-    .sub-page-date {
-      font-size: 1.2rem;
-    }
-
-    .costs-total {
-      font-size: 1.5rem;
-    }
-
-    .costs-table th,
-    .costs-table td {
-      font-size: 1.4rem;
     }
   }
 

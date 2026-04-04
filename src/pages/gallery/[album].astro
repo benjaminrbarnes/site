@@ -24,7 +24,7 @@ const images = getImageUrls(album);
   <div class="photo-album">
     {images.map((src, i) => (
       <img
-        class="img-fluid"
+        class="album-photo"
         src={src}
         alt=""
         loading={i < 3 ? "eager" : "lazy"}

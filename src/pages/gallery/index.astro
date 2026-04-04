@@ -7,24 +7,20 @@ const albums = getVisibleAlbums();
 
 <Layout title="Photos - Ben Barnes">
   <h1 class="page-title">Photos</h1>
-  <div class="row">
+  <div class="album-grid">
     {albums.map(album => (
-      <div class="col-6 col-md-4">
-        <div class="card mb-4">
-          <a href={`/gallery/${album.slug}`}>
-            <img
-              class="card-img-top"
-              src={album.thumbnail}
-              alt={album.title}
-              loading="lazy"
-            />
-          </a>
-          <div class="card-body">
-            <a href={`/gallery/${album.slug}`}>
-              <p class="card-title">{album.title}</p>
-            </a>
-            <p class="card-desc">{album.description}</p>
-          </div>
+      <div class="album-card">
+        <a href={`/gallery/${album.slug}`}>
+          <img
+            class="album-img"
+            src={album.thumbnail}
+            alt={album.title}
+            loading="lazy"
+          />
+        </a>
+        <div class="album-info">
+          <a href={`/gallery/${album.slug}`} class="album-title">{album.title}</a>
+          <p class="album-desc">{album.description}</p>
         </div>
       </div>
     ))}
@@ -32,25 +28,20 @@ const albums = getVisibleAlbums();
 </Layout>
 
 <style>
-  @media (max-width: 767px) {
-    .row {
-      margin-left: -8px;
-      margin-right: -8px;
-    }
-    .row > [class*="col-"] {
-      padding-left: 8px;
-      padding-right: 8px;
-    }
-  }
-
   .page-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 500;
     margin: 0 0 2rem 0;
     color: #2a2a2a;
   }
 
-  .card {
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .album-card {
     background: #fff;
     border: 1px solid #e8e8e8;
     border-radius: 8px;
@@ -59,37 +50,48 @@ const albums = getVisibleAlbums();
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
 
-  .card:hover {
+  .album-card:hover {
     transform: translateY(-4px);
     border-color: #d0d0d0;
   }
 
-  .card-img-top {
+  .album-img {
     width: 100%;
     aspect-ratio: 3 / 4;
     object-fit: cover;
+    display: block;
     transition: transform 0.3s ease;
   }
 
-  .card:hover .card-img-top {
+  .album-card:hover .album-img {
     transform: scale(1.02);
   }
 
-  .card-body {
+  .album-info {
     padding: 1rem;
   }
 
-  .card-title {
-    font-size: 1.25rem;
-    margin: 0 0 0.25rem 0;
+  .album-title {
+    font-size: 1.1rem;
     color: #5a6a8a;
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
-  .card-desc {
-    font-size: 1.05rem;
+  .album-title:hover {
+    color: #3a4a6a;
+  }
+
+  .album-desc {
+    font-size: 0.9rem;
     color: #666;
-    margin: 0;
+    margin: 0.25rem 0 0;
+  }
+
+  @media (max-width: 768px) {
+    .album-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
   }
 </style>

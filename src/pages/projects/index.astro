@@ -8,7 +8,7 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
 ---
 
 <Layout title="Projects - Ben Barnes">
-  <h1 class="page-title">Projects</h1>
+  <h1 class="page-title">Writing</h1>
 
   {topLevelProjects.length === 0 ? (
     <p class="empty-state">No projects yet.</p>
@@ -36,7 +36,7 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
 
 <style>
   .page-title {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 500;
     margin: 0 0 2rem 0;
     color: #2a2a2a;
@@ -72,29 +72,10 @@ const topLevelProjects = projects.filter(p => !p.data.parent);
     color: #5a6a8a;
     text-decoration: underline;
     text-underline-offset: 3px;
-    font-size: 1.15rem;
   }
 
   .project-desc {
     color: #666;
-    font-size: 1rem;
-  }
-
-  @media (max-width: 768px) {
-    .page-title {
-      font-size: 2rem;
-    }
-
-    .empty-state {
-      font-size: 1.6rem;
-    }
-
-    .project-title {
-      font-size: 1.6rem;
-    }
-
-    .project-desc {
-      font-size: 1.4rem;
-    }
+    font-size: 0.9em;
   }
 </style>
