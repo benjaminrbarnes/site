@@ -1,0 +1,48 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+const entry = projects.find(p => p.slug === 'thoughts/sauna/costs');
+if (!entry) return Astro.redirect('/sauna');
+const { Content } = await entry.render();
+
+const costs = entry.data.costs ?? [];
+const total = costs.reduce((sum, c) => sum + c.cost, 0);
+const fmt = (n: number) => '$' + n.toLocaleString('en-US');
+---
+
+<Layout title="Sauna Costs — Ben Barnes" description="Itemized cost breakdown for the backyard sauna build.">
+  <div class="wrap">
+    <div class="article">
+      <nav class="crumb">
+        <a href="/about">About</a>
+        <span class="sep">/</span>
+        <a href="/sauna">The Sauna</a>
+        <span class="sep">/</span>
+        <span class="cur">Costs</span>
+      </nav>
+
+      <Content />
+
+      <div class="total">Total: {fmt(total)}</div>
+      <table class="costs-table">
+        <thead>
+          <tr><th>Item</th><th class="r">Cost</th><th class="r">Date</th></tr>
+        </thead>
+        <tbody>
+          {costs.map(c => (
+            <tr>
+              <td>{c.item}</td>
+              <td class="r">{fmt(c.cost)}</td>
+              <td class="r dt">{c.date}</td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr><td>Total</td><td class="r">{fmt(total)}</td><td></td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</Layout>

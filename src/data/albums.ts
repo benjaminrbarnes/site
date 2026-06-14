@@ -514,7 +514,9 @@ export function getAllAlbums(): Album[] {
   return albums;
 }
 
-export function getImageUrls(album: Album): string[] {
+// Album image URLs. Defaults to 800px wide (gallery/masonry thumbnails);
+// the lightbox swaps `fit-in/800x0` -> `fit-in/1600x0` for the full-res view.
+export function getImageUrls(album: Album, width = 800): string[] {
   let images = album.images;
 
   // Reverse order if specified
@@ -528,10 +530,10 @@ export function getImageUrls(album: Album): string[] {
       const padding = album.paddingLength ?? 3;
       const paddedNum = num.toString().padStart(padding, '0');
       const subfolder = album.noSubfolder ? '' : '/md';
-      return img(`${album.folder}${subfolder}/${album.filePrefix}${paddedNum}.${album.ext}`);
+      return img(`${album.folder}${subfolder}/${album.filePrefix}${paddedNum}.${album.ext}`, width);
     } else {
       // Old-style naming: img + number
-      return img(`${album.folder}/md/img${num}.${album.ext}`);
+      return img(`${album.folder}/md/img${num}.${album.ext}`, width);
     }
   });
 }

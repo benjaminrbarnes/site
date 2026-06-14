@@ -1,0 +1,111 @@
+---
+// Shared lightbox. Renders a single overlay and wires up every image inside a
+// `.masonry` on the page. Thumbnails request fit-in/800x0; the lightbox swaps to
+// fit-in/1600x0 for the full-res view and preloads neighbours (±1, +2).
+---
+
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-btn lb-close" id="lb-close" aria-label="Close">&times;</button>
+  <button class="lb-btn lb-nav lb-prev" id="lb-prev" aria-label="Previous">&#8249;</button>
+  <img id="lb-img" src="" alt="" />
+  <button class="lb-btn lb-nav lb-next" id="lb-next" aria-label="Next">&#8250;</button>
+  <div class="lb-counter"><span id="lb-current">1</span> / <span id="lb-total">1</span></div>
+</div>
+
+<script>
+  const lightbox = document.getElementById('lightbox')!;
+  const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+  const currentEl = document.getElementById('lb-current')!;
+  const totalEl = document.getElementById('lb-total')!;
+  const closeBtn = document.getElementById('lb-close')!;
+  const prevBtn = document.getElementById('lb-prev')!;
+  const nextBtn = document.getElementById('lb-next')!;
+
+  const items = Array.from(
+    document.querySelectorAll<HTMLImageElement>('.masonry .m-item img')
+  );
+
+  const fullSize = (url: string) => url.replace('/fit-in/800x0/', '/fit-in/1600x0/');
+
+  let index = 0;
+  let touchStartX = 0;
+  const preloaded = new Map<string, HTMLImageElement>();
+
+  function preload(i: number): HTMLImageElement | null {
+    if (i < 0 || i >= items.length) return null;
+    const url = fullSize(items[i].src);
+    let im = preloaded.get(url);
+    if (im) return im;
+    im = new Image();
+    im.src = url;
+    preloaded.set(url, im);
+    return im;
+  }
+
+  function show(i: number) {
+    if (i < 0) i = items.length - 1;
+    if (i >= items.length) i = 0;
+    index = i;
+    currentEl.textContent = String(i + 1);
+
+    const thumb = items[i].src;            // 800px — already loaded by the masonry
+    const full = fullSize(thumb);          // 1600px — full-res
+    const hi = preload(i);                 // cached or newly-started full-res load
+
+    if (hi && hi.complete && hi.naturalWidth > 0) {
+      // Full-res already available — show it crisp immediately, no flash.
+      lbImg.src = full;
+    } else {
+      // Paint the cached thumbnail instantly, then upgrade when full-res arrives.
+      lbImg.src = thumb;
+      hi?.addEventListener('load', () => { if (index === i) lbImg.src = full; }, { once: true });
+    }
+
+    preload(i + 1);
+    preload(i - 1);
+    preload(i + 2);
+  }
+
+  function open(i: number) {
+    totalEl.textContent = String(items.length);
+    show(i);
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  items.forEach((img, i) => {
+    const trigger = img.closest('.m-item') ?? img;
+    trigger.addEventListener('click', () => open(i));
+  });
+
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', (e) => { e.stopPropagation(); show(index - 1); });
+  nextBtn.addEventListener('click', (e) => { e.stopPropagation(); show(index + 1); });
+
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === lbImg) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('active')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(index - 1);
+    else if (e.key === 'ArrowRight') show(index + 1);
+  });
+
+  // Touch swipe on the image
+  lbImg.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+  }, { passive: true });
+  lbImg.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) show(diff > 0 ? index + 1 : index - 1);
+  }, { passive: true });
+</script>
