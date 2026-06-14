@@ -14,22 +14,41 @@ npm run build  # Production build
 
 Push to `master` triggers AWS Amplify deployment.
 
-## Project Structure
+## Structure
+
+The site is photography-first: the homepage **is** the gallery, with a couple
+of personal sections demoted to footnotes (footer + the hidden About page).
+
+| Route | Page |
+|---|---|
+| `/` | Photo gallery — visible albums from `albums.ts` |
+| `/album/[slug]` | Album viewer (masonry + keyboard lightbox) |
+| `/contact` | Contact |
+| `/running` | Races (parsed from `fitness.md`) — footer only |
+| `/sauna` | Sauna photo dump — footer only |
+| `/sauna/costs` | Itemized cost table |
+| `/about` | Built but **unlinked** (not in nav/footer yet) |
+
+Nav is **Photos · Contact**. Old routes (`/gallery/*`, `/projects/*`, `/notepad/*`,
+`/writing`, `/openclaw`, `/thoughts/*`) redirect via `astro.config.mjs`.
 
 ```
 src/
+├── components/
+│   └── Lightbox.astro   # Shared lightbox (the only client JS)
 ├── content/
-│   ├── projects/     # Markdown files for projects
-│   └── notepad/      # Markdown files for blog posts
+│   └── projects/        # fitness.md (running), thoughts/sauna*, costs.md
 ├── data/
-│   └── albums.ts     # Photo album definitions
+│   └── albums.ts        # Photo album definitions (source of truth)
 ├── layouts/
-│   └── Layout.astro  # Main layout with nav
+│   └── Layout.astro     # Header + footer + design tokens (global CSS)
 └── pages/
-    ├── index.astro   # Homepage
-    ├── photos/       # Photo gallery
-    ├── projects/     # Projects section
-    └── notepad/      # Blog/notepad section
+    ├── index.astro      # Gallery homepage
+    ├── album/[slug].astro
+    ├── contact.astro
+    ├── running.astro
+    ├── sauna/{index,costs}.astro
+    └── about.astro      # unlinked
 ```
 
 ## Image Infrastructure

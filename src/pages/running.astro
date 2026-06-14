@@ -1,0 +1,58 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Pull race data from the fitness content entry. The markdown body lists each
+// year as `- **YEAR**` with indented race bullets; cancelled races are wrapped
+// in `~~strikethrough~~`.
+const projects = await getCollection('projects');
+const fitness = projects.find(p => p.slug === 'fitness');
+
+interface RaceItem { text: string; strike: boolean }
+interface RaceYear { year: string; items: RaceItem[] }
+
+const years: RaceYear[] = [];
+if (fitness) {
+  let current: RaceYear | null = null;
+  for (const line of fitness.body.split('\n')) {
+    const yearMatch = line.match(/^-\s+\*\*(.+?)\*\*\s*$/);
+    if (yearMatch) {
+      current = { year: yearMatch[1], items: [] };
+      years.push(current);
+      continue;
+    }
+    const itemMatch = line.match(/^\s+-\s+(.+?)\s*$/);
+    if (itemMatch && current) {
+      let text = itemMatch[1];
+      const strike = /^~~.*~~$/.test(text);
+      if (strike) text = text.replace(/^~~/, '').replace(/~~$/, '');
+      current.items.push({ text, strike });
+    }
+  }
+}
+---
+
+<Layout title="Running — Ben Barnes" description="A log of races, PRs, and the occasional DNF.">
+  <div class="wrap">
+    <div class="article">
+      <nav class="crumb">
+        <a href="/about">About</a>
+        <span class="sep">/</span>
+        <span class="cur">Running</span>
+      </nav>
+      <h1>Races</h1>
+      <ul class="races">
+        {years.map(y => (
+          <li>
+            <div class="race-year">{y.year}</div>
+            <ul class="race-items">
+              {y.items.map(it => (
+                <li class={it.strike ? 'strike' : ''}>{it.text}</li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</Layout>

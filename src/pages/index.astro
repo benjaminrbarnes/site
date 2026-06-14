@@ -1,86 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getVisibleAlbums } from '../data/albums';
 
-const allProjects = await getCollection('projects');
-const thoughtsArticles = allProjects.filter(p => p.data.parent === 'thoughts').sort((a, b) => {
-  if (a.data.date && b.data.date) {
-    return b.data.date.getTime() - a.data.date.getTime();
-  }
-  return 0;
-});
-const otherProjects = allProjects.filter(p => !p.data.parent && p.slug !== 'thoughts');
+// Visible albums in file order (newest first — Austria 2025 leads).
+const albums = getVisibleAlbums();
 ---
 
-<Layout title="Ben Barnes">
-  <section class="writing-section">
-    <ul class="writing-list">
-      {thoughtsArticles.map(article => (
-        <li>
-          <a href={`/projects/${article.slug}`}>{article.data.title}</a>
-          {article.data.date && (
-            <span class="date">{article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
-          )}
-        </li>
+<Layout title="Ben Barnes" description="Photographs by Ben Barnes — travels, weddings, and ordinary days.">
+  <div class="wrap">
+    <div class="gallery gallery-top">
+      {albums.map((album, i) => (
+        <a class="card" href={`/album/${album.slug}`}>
+          <div class="card-img">
+            <img src={album.thumbnail} alt={album.title} loading={i < 3 ? 'eager' : 'lazy'} />
+          </div>
+          <div class="card-cap">
+            <div class="ct">{album.title}</div>
+            <div class="cd">{album.description}</div>
+          </div>
+        </a>
       ))}
-    </ul>
-  </section>
-
-  <section class="other-section">
-    <h2>Projects</h2>
-    <ul class="writing-list">
-      {otherProjects.map(project => (
-        <li>
-          <a href={`/projects/${project.slug}`}>{project.data.title}</a>
-        </li>
-      ))}
-    </ul>
-  </section>
+    </div>
+  </div>
 </Layout>
-
-<style>
-  .writing-section {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid #e0e0e0;
-  }
-
-  .writing-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .writing-list li {
-    padding: 0.4rem 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-  }
-
-  .writing-list a {
-    color: #5a6a8a;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .writing-list a:hover {
-    color: #3a4a6a;
-  }
-
-  .date {
-    color: #999;
-    font-size: 0.9em;
-    white-space: nowrap;
-  }
-
-  .other-section h2 {
-    font-size: 1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #999;
-    margin: 0 0 0.75rem 0;
-  }
-</style>

@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// NOTE: built but intentionally unlinked — not referenced from nav or footer yet.
+// Bio and portrait are placeholders; swap in real content to turn this on.
+---
+
+<Layout title="About — Ben Barnes" description="About Ben Barnes.">
+  <div class="wrap">
+    <div class="about">
+      <div class="about-portrait">
+        <div class="portrait">
+          <span>Portrait</span>
+        </div>
+      </div>
+      <div class="about-body">
+        <h1 class="about-name">Ben Barnes</h1>
+        <p>I live in Atlanta and take photographs wherever I end up. Most of what&rsquo;s here is shot on film &mdash; trips through Europe, weddings and weekends with friends, and the ordinary days in between.</p>
+        <p>This site is mostly a place to keep those rolls together. If a frame stops you, that&rsquo;s the whole idea.</p>
+        <p class="about-note">&mdash; placeholder bio, swap in your own.</p>
+
+        <div class="about-also">
+          <div class="idx-sub" style="margin-bottom: 16px;">Also</div>
+          <ul class="also-list">
+            <li><a href="/running">Running</a> &mdash; a log of races, PRs, and the occasional DNF.</li>
+            <li><a href="/sauna">The sauna</a> &mdash; a backyard build, with photos and a full cost breakdown.</li>
+            <li><a href="https://instagram.com/benjaminbarnes" target="_blank" rel="noopener">Instagram</a> &mdash; newer frames, more often.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

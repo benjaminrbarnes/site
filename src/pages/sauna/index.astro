@@ -1,0 +1,44 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import { getCollection } from 'astro:content';
+import ratios from '../../data/aspectRatios.json';
+
+const projects = await getCollection('projects');
+const sauna = projects.find(p => p.slug === 'thoughts/sauna');
+const { Content } = sauna ? await sauna.render() : { Content: null };
+
+// Sauna build photo dump (folder 2025/sauna, image 12 is skipped).
+const IMAGE_HANDLER = 'https://d35s6fmxia7g6v.cloudfront.net';
+const photo = (n: number, w = 800) =>
+  `${IMAGE_HANDLER}/fit-in/${w}x0/filters:quality(90)/photos/2025/sauna/${n}.jpg`;
+const nums = [...Array.from({ length: 11 }, (_, i) => i + 1), ...Array.from({ length: 82 }, (_, i) => i + 13)];
+const images = nums.map(n => photo(n));
+// Precomputed aspect ratios reserve each photo's space before it loads (no shift).
+const saunaRatios: number[] = (ratios as Record<string, number[]>)['__sauna'] ?? [];
+---
+
+<Layout title="The Sauna — Ben Barnes" description="A backyard sauna build, with photos and a full cost breakdown.">
+  <div class="wrap">
+    <div class="article" style="max-width: var(--max);">
+      <div style="max-width: var(--read);">
+        <nav class="crumb">
+          <a href="/about">About</a>
+          <span class="sep">/</span>
+          <span class="cur">The Sauna</span>
+        </nav>
+        <h1>DIY Sauna</h1>
+        {Content && <Content />}
+        <p class="more"><a href="/sauna/costs">See detailed costs &rarr;</a></p>
+      </div>
+      <div class="masonry" style="padding-bottom: 0;">
+        {images.map((src, i) => (
+          <button class="m-item" aria-label="Open photo">
+            <img src={src} alt="" loading="lazy" decoding="async" style={`aspect-ratio: ${saunaRatios[i] ?? 1.5};`} />
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+  <Lightbox />
+</Layout>
