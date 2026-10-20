@@ -9,6 +9,7 @@ const { title = 'Ben Barnes', description = 'Photographs by Ben Barnes.' } = Ast
 const path = Astro.url.pathname;
 const inPhotos = path === '/' || path.startsWith('/album');
 const inContact = path.startsWith('/contact');
+const inEtc = ['/running', '/sauna', '/tennis'].some(section => path.startsWith(section));
 const year = new Date().getFullYear();
 ---
 
@@ -38,6 +39,14 @@ const year = new Date().getFullYear();
           </div>
           <nav class="menu">
             <a class={inPhotos ? 'active' : ''} href="/">Photos</a>
+            <details class="etc-menu">
+              <summary class={inEtc ? 'active' : ''}>Etc <span aria-hidden="true">⌄</span></summary>
+              <div class="etc-links">
+                <a href="/running">Running</a>
+                <a href="/sauna">Sauna</a>
+                <span class="coming-soon">Tennis <small>Coming soon</small></span>
+              </div>
+            </details>
             <a class={inContact ? 'active' : ''} href="/contact">Contact</a>
           </nav>
         </div>
@@ -63,6 +72,21 @@ const year = new Date().getFullYear();
     </footer>
   </body>
 </html>
+
+<script>
+  const dropdown = document.querySelector<HTMLDetailsElement>('.etc-menu');
+  document.addEventListener('click', event => {
+    if (dropdown && event.target instanceof Node && !dropdown.contains(event.target)) {
+      dropdown.open = false;
+    }
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && dropdown?.open) {
+      dropdown.open = false;
+      dropdown.querySelector('summary')?.focus();
+    }
+  });
+</script>
 
 <style is:global>
   :root {
@@ -119,12 +143,28 @@ const year = new Date().getFullYear();
   .wordmark { font-weight: 700; font-size: 29px; letter-spacing: -.012em; color: var(--head); line-height: 1; font-family: var(--serif); white-space: nowrap; flex-shrink: 0; text-decoration: none; }
   .wordmark:hover { color: var(--head); }
   .menu { display: flex; gap: 36px; }
-  .menu a {
+  .menu a, .menu summary {
     text-transform: uppercase; letter-spacing: .19em; font-size: 16px; font-weight: 500; color: #746f60;
     text-decoration: none; transition: color .15s ease;
   }
   .menu a:hover { color: var(--head); }
   .menu a.active { color: var(--head); }
+  .etc-menu { position: relative; }
+  .etc-menu summary { cursor: pointer; list-style: none; }
+  .etc-menu summary::-webkit-details-marker { display: none; }
+  .etc-menu summary.active, .etc-menu summary:hover { color: var(--head); }
+  .etc-menu summary:focus-visible { outline: 2px solid var(--link); outline-offset: 5px; }
+  .etc-links {
+    position: absolute; top: calc(100% + 14px); left: 50%; transform: translateX(-50%);
+    width: 210px; padding: 10px; background: var(--bg); border: 1px solid var(--rule);
+    border-radius: 6px; box-shadow: 0 10px 24px rgba(40,36,28,.12);
+  }
+  .menu .etc-links a, .coming-soon {
+    display: block; padding: 9px 12px; font-size: 18px; letter-spacing: 0; text-transform: none;
+  }
+  .menu .etc-links a:hover { background: var(--rule-soft); border-radius: 3px; }
+  .coming-soon { color: var(--muted); }
+  .coming-soon small { display: block; font-size: 13px; }
 
   /* ---------- Breadcrumb ---------- */
   .crumb { display: flex; align-items: baseline; flex-wrap: wrap; gap: .15em; margin: 0 0 28px; }
@@ -243,7 +283,7 @@ const year = new Date().getFullYear();
     .wrap { padding: 0 22px; }
     .nav { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px 0; }
     .menu { gap: 26px; }
-    .menu a { font-size: 15px; }
+    .menu a, .menu summary { font-size: 15px; }
     .article h1 { font-size: 34px; }
     .lb-nav { width: 64px; font-size: 34px; }
     .about { grid-template-columns: 1fr; gap: 30px; }
