@@ -104,7 +104,10 @@ Upload with `s3api put-object --if-match ORIGINAL_ETAG`; no blind overwrite/retr
 On conflict, abort with reread-and-reapply instruction (do not automatically merge).
 Read back via authenticated S3 and compare actual bytes/parsed contents.
 If send outcome uncertain, read back before retrying. Public page may lag 5 minutes.
-There is no delete command in v1. Corrections use edit; historical import adds one
+Deletion/recovery were subsequently authorized: `delete --id UUID` removes exactly
+one record with the same diff/concurrency/read-back safeguards. `versions` and
+`restore --version-id VERSION` support recovery without deleting backup versions.
+Corrections use edit; historical import adds one
 validated record at a time, preserving IDs across retries.
 
 ## Website
@@ -140,7 +143,8 @@ names/notes. Don't infer history from scheduled matches or reservations.
 
 ## Rollback and acceptance
 
-S3 version rollback is admin-only; Hermes cannot delete backup versions.
+Hermes can preview and restore an older version when Ben requests recovery, using
+GetObjectVersion and prefix-scoped ListBucketVersions. It cannot delete backup versions.
 Report exact new resources, public data URL, restricted profile, tested permissions,
 deployment result, and credential rotation/revocation procedure without secrets.
 Version rollback restores bad data updates; Git revert restores UI/publisher code.

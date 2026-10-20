@@ -129,5 +129,66 @@ class PublisherTests(unittest.TestCase):
             self.assertNotIn("AWS_PROFILE", store.env)
             self.assertIn("tennis-publisher", store.env["AWS_SHARED_CREDENTIALS_FILE"])
 
+    def test_delete_preserves_remaining(self):
+        before = document(); before["matches"].extend([match(2), match(3)])
+        after, changed = t.prepare(before, None, "delete", match(2)["id"])
+        self.assertTrue(changed)
+        self.assertEqual(after["matches"], [before["matches"][0], before["matches"][2]])
+        self.assertEqual(len(before["matches"]), 3)
+
+    def test_delete_retry_noop_and_invalid_id(self):
+        after, changed = t.prepare(document(), None, "delete", match(2)["id"])
+        self.assertFalse(changed)
+        self.assertEqual(after, document())
+        with self.assertRaises(t.PublishError): t.prepare(document(), None, "delete", "bad-id")
+
+    def test_delete_rejects_multiple_or_mutation(self):
+        before = document(); before["matches"].append(match(2))
+        after, _ = t.prepare(before, None, "delete", match()["id"])
+        after["matches"][0]["result"] = "loss"
+        with self.assertRaises(t.PublishError): t.check_diff(before, after, "delete", match()["id"])
+        after["matches"] = []
+        with self.assertRaises(t.PublishError): t.check_diff(before, after, "delete", match()["id"])
+
+    def test_delete_publish_and_dry_run(self):
+        store = Store(); raw = store.raw
+        self.assertTrue(t.publish(store, None, "delete", match()["id"], True)["dryRun"])
+        self.assertEqual(store.raw, raw)
+        result = t.publish(store, None, "delete", match()["id"])
+        self.assertTrue(result["verified"])
+        self.assertEqual(json.loads(store.raw)["matches"], [])
+
+    def test_delete_conflict_stops(self):
+        store = Store()
+        with patch.object(store, "put", side_effect=t.PublishError("412")):
+            with self.assertRaises(t.PublishError): t.publish(store, None, "delete", match()["id"])
+
+    def test_restore_and_preview(self):
+        store = Store(); previous = store.raw
+        current = document(); current["matches"].append(match(2)); store.raw = json.dumps(current).encode()
+        original_read = store.read
+        with patch.object(store, "read", side_effect=lambda version_id=None: (previous, '"old-etag"') if version_id else original_read()):
+            result = t.restore(store, "old-version", True)
+            self.assertEqual(result["removedIds"], [match(2)["id"]])
+            self.assertEqual(store.puts, 0)
+            self.assertTrue(t.restore(store, "old-version")["verified"])
+        self.assertEqual(store.raw, previous)
+
+    def test_restore_can_repair_corrupt_current_but_reject_bad_backup(self):
+        store = Store(); previous = store.raw; store.raw = b'not json'
+        original_read = store.read
+        with patch.object(store, "read", side_effect=lambda version_id=None: (previous, '"old-etag"') if version_id else original_read()):
+            self.assertTrue(t.restore(store, "valid-version")["currentMalformed"])
+        self.assertEqual(store.raw, previous)
+        with patch.object(store, "read", side_effect=lambda version_id=None: (b'invalid', '"x"') if version_id else original_read()):
+            with self.assertRaises(t.PublishError): t.restore(store, "invalid-version")
+
+    def test_restore_readback_mismatch(self):
+        store = Store(); previous = store.raw
+        doc = document(); doc["matches"] = []; store.raw = json.dumps(doc).encode()
+        original_read = store.read
+        with patch.object(store, "read", side_effect=lambda version_id=None: (previous, '"old-etag"') if version_id else original_read()), patch.object(store, "put", return_value=None):
+            with self.assertRaises(t.PublishError): t.restore(store, "old-version")
+
 
 if __name__ == "__main__": unittest.main()

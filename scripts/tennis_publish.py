@@ -97,17 +97,26 @@ def check_diff(before, after, operation, target):
     require(before["schemaVersion"] == after["schemaVersion"], "Schema changed")
     if operation == "add":
         require(set(new) - set(old) == {target} and set(old) <= set(new), "Add must create exactly one ID")
+    elif operation == "delete":
+        require(set(old) - set(new) == {target} and set(new) <= set(old), "Delete must remove exactly one ID")
     else:
         require(set(old) == set(new) and target in old, "Edit must preserve all IDs")
     require(all(new[k] == v for k, v in old.items() if operation == "add" or k != target), "Unrelated match changed")
-    require([m["id"] for m in after["matches"] if m["id"] in old] == [m["id"] for m in before["matches"]], "Existing records reordered")
+    require([m["id"] for m in after["matches"] if m["id"] in old] == [m["id"] for m in before["matches"] if operation != "delete" or m["id"] != target], "Existing records reordered")
 
 
 def prepare(before, match, operation, target=None):
     validate_document(before)
-    validate_match(match)
-    target = target or match["id"]
-    require(target == match["id"], "Edit cannot change the ID")
+    require(operation in ("add", "edit", "delete"), "Invalid operation")
+    if operation == "delete":
+        try:
+            require(isinstance(target, str) and str(uuid.UUID(target)) == target, "Delete requires a canonical UUID")
+        except (ValueError, TypeError, AttributeError) as exc:
+            raise PublishError("Invalid delete ID") from exc
+    else:
+        validate_match(match)
+        target = target or match["id"]
+        require(target == match["id"], "Edit cannot change the ID")
     existing = next((m for m in before["matches"] if m["id"] == target), None)
     if existing == match:
         return copy.deepcopy(before), False
@@ -116,8 +125,10 @@ def prepare(before, match, operation, target=None):
     after = copy.deepcopy(before)
     if operation == "add":
         after["matches"].append(copy.deepcopy(match))
-    else:
+    elif operation == "edit":
         after["matches"] = [copy.deepcopy(match) if m["id"] == target else m for m in after["matches"]]
+    else:
+        after["matches"] = [m for m in after["matches"] if m["id"] != target]
     after["updatedAt"] = dt.datetime.now(dt.timezone.utc).isoformat().replace("+00:00", "Z")
     check_diff(before, after, operation, target)
     return after, True
@@ -136,11 +147,16 @@ class S3Store:
             raise PublishError(done.stderr.strip())
         return json.loads(done.stdout or "{}")
 
-    def read(self):
+    def read(self, version_id=None):
         with tempfile.TemporaryDirectory(prefix="tennis-read-") as directory:
             path = Path(directory) / "data.json"
-            meta = self.run("s3api", "get-object", "--bucket", CONFIG["bucket"], "--key", CONFIG["key"], str(path))
+            version = ("--version-id", version_id) if version_id else ()
+            meta = self.run("s3api", "get-object", "--bucket", CONFIG["bucket"], "--key", CONFIG["key"], *version, str(path))
             return path.read_bytes(), meta["ETag"]
+
+    def versions(self):
+        result = self.run("s3api", "list-object-versions", "--bucket", CONFIG["bucket"], "--prefix", CONFIG["key"])
+        return [{"versionId": v["VersionId"], "lastModified": v["LastModified"], "current": v["IsLatest"], "size": v["Size"]} for v in result.get("Versions", []) if v["Key"] == CONFIG["key"]]
 
     def put(self, raw, etag):
         with tempfile.TemporaryDirectory(prefix="tennis-write-") as directory:
@@ -153,7 +169,10 @@ def publish(store, match, operation, target=None, dry_run=False):
     original, etag = store.read()
     before = parse_json(original)
     after, changed = prepare(before, match, operation, target)
-    summary = {"operation": operation, "id": match["id"], "changed": changed, "dryRun": dry_run, "beforeCount": len(before["matches"]), "afterCount": len(after["matches"]), "changes": {k: {"before": next((m for m in before["matches"] if m["id"] == match["id"]), {}).get(k), "after": v} for k, v in match.items() if next((m for m in before["matches"] if m["id"] == match["id"]), {}).get(k) != v}}
+    target = target or match["id"]
+    old_match = next((m for m in before["matches"] if m["id"] == target), {})
+    changes = {"record": {"before": old_match, "after": None}} if operation == "delete" and changed else {k: {"before": old_match.get(k), "after": v} for k, v in (match or {}).items() if old_match.get(k) != v}
+    summary = {"operation": operation, "id": target, "changed": changed, "dryRun": dry_run, "beforeCount": len(before["matches"]), "afterCount": len(after["matches"]), "changes": changes}
     if changed and not dry_run:
         raw = (json.dumps(after, ensure_ascii=False, allow_nan=False, indent=2) + "\n").encode()
         validate_document(parse_json(raw))
@@ -172,6 +191,32 @@ def publish(store, match, operation, target=None, dry_run=False):
     return summary
 
 
+def restore(store, version_id, dry_run=False):
+    current, etag = store.read()
+    previous, _ = store.read(version_id)
+    recovered = parse_json(previous)
+    validate_document(recovered)
+    try:
+        before = parse_json(current)
+        validate_document(before)
+    except PublishError:
+        before = None
+    old = {m["id"]: m for m in before["matches"]} if before else {}
+    new = {m["id"]: m for m in recovered["matches"]}
+    summary = {"operation": "restore", "versionId": version_id, "dryRun": dry_run, "currentMalformed": before is None, "beforeCount": len(old) if before else None, "afterCount": len(new), "addedIds": sorted(new.keys() - old.keys()), "removedIds": sorted(old.keys() - new.keys()), "editedIds": sorted(k for k in old.keys() & new.keys() if old[k] != new[k])}
+    if not dry_run:
+        try:
+            store.put(previous, etag)
+        except (PublishError, subprocess.TimeoutExpired):
+            verified, _ = store.read()
+            if verified != previous:
+                raise
+        verified, _ = store.read()
+        require(verified == previous, "Restore read-back differs; inspect before retrying")
+        summary["verified"] = True
+    return summary
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -182,17 +227,33 @@ def main():
             command.add_argument("--id", required=True)
         command.add_argument("--dry-run", action="store_true")
     sub.add_parser("list", help="Read and validate current data")
+    delete = sub.add_parser("delete", help="Remove exactly one match; S3 version history is preserved")
+    delete.add_argument("--id", required=True)
+    delete.add_argument("--dry-run", action="store_true")
+    sub.add_parser("versions", help="List recoverable versions of this JSON file only")
+    recover = sub.add_parser("restore", help="Restore a validated prior document as a new version")
+    recover.add_argument("--version-id", required=True)
+    recover.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
     try:
         store = S3Store()
+        if args.command == "versions":
+            print(json.dumps(store.versions(), indent=2))
+            return
+        if args.command == "restore":
+            print(json.dumps(restore(store, args.version_id, args.dry_run), indent=2))
+            return
         if args.command == "list":
             raw, _ = store.read()
             doc = parse_json(raw)
             validate_document(doc)
             print(json.dumps(doc, ensure_ascii=False, indent=2))
             return
-        raw = sys.stdin.buffer.read() if args.input == "-" else Path(args.input).read_bytes()
-        print(json.dumps(publish(store, parse_json(raw), args.command, getattr(args, "id", None), args.dry_run), ensure_ascii=False, indent=2))
+        match = None
+        if args.command != "delete":
+            raw = sys.stdin.buffer.read() if args.input == "-" else Path(args.input).read_bytes()
+            match = parse_json(raw)
+        print(json.dumps(publish(store, match, args.command, getattr(args, "id", None), args.dry_run), ensure_ascii=False, indent=2))
     except (PublishError, OSError, subprocess.TimeoutExpired) as exc:
         print(f"Tennis publish stopped: {exc}", file=sys.stderr)
         sys.exit(1)

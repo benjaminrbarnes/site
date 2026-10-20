@@ -39,7 +39,7 @@ def main():
     aws("s3api", "put-bucket-policy", "--bucket", CONFIG["bucket"], "--policy", json.dumps({"Version": "2012-10-17", "Statement": [{"Sid": "PublicReadTennisOnly", "Effect": "Allow", "Principal": "*", "Action": "s3:GetObject", "Resource": resource}, {"Sid": "RequireTLS", "Effect": "Deny", "Principal": "*", "Action": "s3:*", "Resource": [f"arn:aws:s3:::{CONFIG['bucket']}", f"arn:aws:s3:::{CONFIG['bucket']}/*"], "Condition": {"Bool": {"aws:SecureTransport": "false"}}}]}))
     if aws("iam", "get-user", "--user-name", USER, allow_missing=True) is None:
         aws("iam", "create-user", "--user-name", USER, "--tags", "Key=Purpose,Value=PublicTennisPublishing")
-    aws("iam", "put-user-policy", "--user-name", USER, "--policy-name", "TennisObjectOnly", "--policy-document", json.dumps({"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": ["s3:GetObject", "s3:PutObject"], "Resource": resource}]}))
+    aws("iam", "put-user-policy", "--user-name", USER, "--policy-name", "TennisObjectOnly", "--policy-document", json.dumps({"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": ["s3:GetObject", "s3:PutObject", "s3:GetObjectVersion"], "Resource": resource}, {"Effect": "Allow", "Action": "s3:ListBucketVersions", "Resource": f"arn:aws:s3:::{CONFIG['bucket']}", "Condition": {"StringEquals": {"s3:prefix": CONFIG["key"]}}}]}))
     auth = Path.home() / ".aws" / "tennis-publisher"
     auth.mkdir(mode=0o700, parents=True, exist_ok=True)
     credentials = auth / "credentials"

@@ -13,7 +13,8 @@ document at runtime; publishing a result does not rebuild the site.
 - CORS allows the two production origins and local preview 127.0.0.1:4330.
 - Cache-Control: `public,max-age=300`; no invalidations or constant polling required.
 - Dedicated IAM user: `ben-website-tennis-publisher`, no console login.
-- Inline policy `TennisObjectOnly`: only GetObject/PutObject on the exact JSON key.
+- Inline policy `TennisObjectOnly`: GetObject/PutObject/GetObjectVersion on the exact JSON key,
+  plus ListBucketVersions restricted to that exact key prefix. No S3 object/version deletion.
 - Isolated AWS profile: `tennis-publisher`, credentials/config under
   `/Users/ben/.aws/tennis-publisher/` with owner-only access. No credentials in Git.
 - Publisher strips ambient AWS variables and uses only this profile. Missing or
@@ -37,6 +38,11 @@ python3 scripts/tennis_publish.py add --input match.json --dry-run
 python3 scripts/tennis_publish.py add --input match.json
 python3 scripts/tennis_publish.py edit --id UUID --input revised-match.json --dry-run
 python3 scripts/tennis_publish.py edit --id UUID --input revised-match.json
+python3 scripts/tennis_publish.py delete --id UUID --dry-run
+python3 scripts/tennis_publish.py delete --id UUID
+python3 scripts/tennis_publish.py versions
+python3 scripts/tennis_publish.py restore --version-id VERSION --dry-run
+python3 scripts/tennis_publish.py restore --version-id VERSION
 ```
 
 `--input -` reads stdin. Input is one complete match object, not the whole document.
@@ -49,8 +55,9 @@ disappear/reorder. Upload uses the downloaded ETag; conflicts stop. Identical re
 is a no-op. Successful writes are read back byte-for-byte. Never blindly retry an
 uncertain upload. `verified: true` establishes S3 read-back; public caches may lag.
 
-There is no agent delete operation. Admins can remove demos once Ben requests it,
-using a reviewed versioned update. Do not infer historical results from bookings.
+Delete removes exactly one match from the document, preserves all other records,
+and writes a new S3 version. Repeated deletion of an already-absent ID is a no-op.
+Ben authorized this for errors and sample cleanup. Do not infer historical results from bookings.
 
 ## Hermes
 
@@ -68,10 +75,13 @@ the dry-run/publish sequence. It does not submit scores to a league or message o
 
 ## Rollback and verification
 
-Use admin `list-object-versions` on the exact key, inspect a prior version, and
-restore it as a NEW current version with correct content headers. Do not delete
-version history or let Hermes perform administrative rollback. Website code can
-be rolled back through Git and Amplify.
+Hermes can list versions and restore a validated prior JSON as a NEW current version
+using the commands above. Restore previews all added/removed/edited IDs and uses an
+ETag condition plus read-back. It can repair malformed current data. Restore only
+when Ben asks to undo a mistake; a whole-file restore can roll back newer legitimate
+changes, so recover just one record with add/edit when that is what Ben intends.
+No object versions may be permanently deleted. Website code can be rolled back
+through Git and Amplify. Old JSON versions remain available for 90 days.
 
 ```
 python3 -m unittest discover -s tests -v

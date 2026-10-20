@@ -1,6 +1,6 @@
 ---
 name: tennis-website
-description: Publish or correct Ben's public tennis match history on benjaminbarnes.co when he says to update his website with a match, score, or historical tennis results. Use for public match publishing, not court bookings or league result submission.
+description: Add, edit, delete, or recover matches on Ben's public tennis website when he asks to update results, remove samples or errors, or undo a publishing mistake. Does not submit scores to leagues or book courts.
 ---
 
 # Tennis website
@@ -21,14 +21,15 @@ into a real record. Do not infer played results from calendar entries/reservatio
 
 1. Read current matches with:
    `python3 /Users/ben/Documents/Development.nosync/site/scripts/tennis_publish.py list`
-2. Resolve whether the user wants a new match or a correction. Match existing date,
+2. Resolve whether the user wants a new match, correction, or deletion. Match existing date,
    league, opponents and format; do not add a duplicate of an already-recorded match.
    Use actual played date in America/New_York unless Ben specifies another local date.
 3. Create one JSON match input in a temporary working file, or pass JSON through
    stdin (`--input -`). Generate a UUID once for a new match and reuse it on retries.
    For edits preserve the existing UUID and copy the full existing record, modifying
    only the requested fields. Scores always from Ben's/team's perspective.
-4. Run `add --input PATH --dry-run` or `edit --id UUID --input PATH --dry-run`.
+4. Run `add --input PATH --dry-run`, `edit --id UUID --input PATH --dry-run`, or
+   `delete --id UUID --dry-run` (no input file for deletion).
    Inspect the semantic diff. Then repeat without `--dry-run`. One command changes
    one match; process a historical batch one record at a time.
 5. Success must report `verified: true` (or an identical verified no-op). On a
@@ -56,11 +57,25 @@ email, credentials, scheduling notes, or unrelated personal details belong here.
 
 Example sample files are in `/Users/ben/Documents/Development.nosync/site/docs/tennis-examples/`.
 For the initial user test, changing `notes` on sample opponent A is safe and keeps
-all real statistics untouched. There is no delete command; if Ben asks to remove
-the demos entirely, explain that admin cleanup is required rather than overwriting
-the document with the agent credentials.
+all real statistics untouched. Ben permits deleting matches when he asks, including
+removing demos or erroneous/duplicate entries. Resolve the exact IDs with `list`;
+delete one at a time, checking the dry-run. A missing ID is a verified no-op, not
+evidence a different requested match was removed. Never delete the S3 object itself.
 
-The publisher validates the whole JSON, permits exactly one new/edited ID,
+## Recovery
+
+S3 versioning is enabled; older versions are retained for 90 days. Use `versions`
+to list snapshots of this JSON only. When Ben asks to undo a mistake, choose the
+known version immediately before it and run `restore --version-id VERSION --dry-run`.
+This previews all added/removed/edited IDs. A restore replaces the WHOLE document:
+if newer legitimate edits would be lost, recover only the affected record using
+the ordinary add/edit commands instead (read old JSON with the same restricted
+profile via S3Store.read(version_id)). Do not restore unrelated history blindly.
+After inspecting the intended diff, run without `--dry-run`, then check verified.
+Restoring creates a new current version and preserves previous snapshots. It
+also works if the current JSON is malformed. No version may be permanently deleted.
+
+The publisher validates the whole JSON, permits exactly one added/edited/deleted ID,
 preserves every other record, checks concurrency via ETag, and reads back its write.
 It deliberately has no root credential fallback. If authentication fails, report
 the exact error without exposing keys; don't run `aws login` or use default credentials.
