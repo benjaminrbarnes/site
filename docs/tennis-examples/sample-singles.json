@@ -1,0 +1,14 @@
+{
+  "id": "faeaedb1-dc7f-43ea-8c73-0c6e2338b001",
+  "date": "2026-10-20",
+  "league": "Demo",
+  "season": "Sample season",
+  "format": "singles",
+  "opponents": ["Sample opponent A"],
+  "partner": null,
+  "status": "completed",
+  "result": "win",
+  "sets": [{"kind":"set","ben":6,"opponent":4},{"kind":"set","ben":7,"opponent":6,"tiebreak":{"ben":7,"opponent":5}}],
+  "sample": true,
+  "notes": "Example entry for testing the website. This is not a real match."
+}

@@ -1,0 +1,7 @@
+{
+  "bucket": "benjaminbarnes-tennis-552544732655",
+  "key": "tennis/matches.json",
+  "region": "us-east-1",
+  "profile": "tennis-publisher",
+  "publicUrl": "https://benjaminbarnes-tennis-552544732655.s3.us-east-1.amazonaws.com/tennis/matches.json"
+}

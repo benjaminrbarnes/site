@@ -1,6 +1,8 @@
 # Tennis publishing implementation handoff
 
-Status: design approved in principle, implementation deferred for model switch.
+Status: implemented October 20, 2026; see `docs/tennis-operations.md` for live resources and commands.
+The user subsequently authorized production samples and end-to-end implementation;
+sample records are explicitly marked and excluded from real statistics.
 Date: 2026-10-20. Read this with repository instructions before implementing.
 
 ## Goal and scope
@@ -10,7 +12,7 @@ without a Git commit or site deployment. Keep one public JSON document.
 No database, Notion, per-match objects, Lambda, or custom service.
 Ben accepts that the agent technically can replace the entire document.
 He explicitly proposed/authorized a small Python add/edit publishing program.
-Do not implement infrastructure during the design-only turn.
+Infrastructure implementation is now authorized by the subsequent user goal.
 
 Current site is Astro static, Amplify deploys `master`.
 Running is generated from Markdown at build time. Tennis must fetch at runtime.
@@ -24,7 +26,8 @@ Replace the label with a link when the real page exists. Photos stays the homepa
 2. Create a dedicated uniquely named S3 bucket for tennis data. Enable versioning,
    bucket-owner-enforced object ownership, and default encryption. Use a lifecycle
    rule to expire noncurrent versions after 90 days; preserve current version.
-3. Store only `tennis/matches.json`. Initial document is empty, never fabricated history.
+3. Store only `tennis/matches.json`. Seed with clearly labeled sample entries per
+   Ben's subsequent authorization; never represent them as real match history.
 4. Public delivery: simplest option is the regional HTTPS S3 object URL, with
    anonymous GetObject permitted ONLY for that exact key. Configure CORS GET/HEAD
    for `https://www.benjaminbarnes.co`. Inspect account public-access controls first;
@@ -126,7 +129,8 @@ and dates without timezone drift.
 Test restricted credentials with expected allowed read and an IAM policy simulation
 for denied unrelated writes/deletes; don't create unrelated test objects.
 Exercise full add/edit workflow in a separate staging key/profile if needed,
-then remove staging permissions. Do not publish a fake result into real statistics.
+then remove staging permissions. Production demo records must stay marked sample
+and excluded from real statistics, per Ben's subsequent testing authorization.
 Once ready, give Ben the exact Hermes instruction for adding one real match.
 Ben may ask Hermes directly; don't message Hermes externally without explicit approval.
 Inspect existing Hermes skill/config instructions and integrate a short publishing

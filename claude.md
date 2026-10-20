@@ -11,8 +11,8 @@ Personal photography portfolio website built with Astro. Static site showcasing 
 - **Deployment**: AWS Amplify (auto-deploy on push to master)
 
 ## Information Architecture
-Photography-first: the homepage **is** the gallery. Nav is **Photos · Contact**.
-Running + Sauna are footnotes (footer + the hidden About page).
+Photography-first: the homepage **is** the gallery. Nav is **Photos · ETC · Contact**.
+ETC links to Running, Sauna, and Tennis. Running + Sauna also remain in the footer.
 
 | Route | Page |
 |---|---|
@@ -20,6 +20,7 @@ Running + Sauna are footnotes (footer + the hidden About page).
 | `/album/[slug]` | Album viewer (masonry + keyboard lightbox) — all albums, incl. hidden |
 | `/contact` | Contact |
 | `/running` | Races — parsed from `fitness.md` |
+| `/tennis` | Runtime S3 match history; see `docs/tennis-operations.md` |
 | `/sauna` · `/sauna/costs` | Sauna photo dump + cost table |
 | `/about` | Built but **unlinked** (not in nav/footer) |
 

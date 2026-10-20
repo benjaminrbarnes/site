@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Tennis — Ben Barnes" description="Match results, scores, and a little progress along the way.">
+  <div class="wrap">
+    <article class="article tennis" aria-labelledby="tennis-title">
+      <nav class="crumb" aria-label="Breadcrumb"><a href="/">Photos</a><span class="sep">/</span><span class="cur">Tennis</span></nav>
+      <p class="idx-sub">On court</p>
+      <h1 id="tennis-title">Tennis</h1>
+      <p class="intro">A match-by-match record. The good days, the close ones, and everything in between.</p>
+      <p id="tennis-state" role="status" aria-live="polite">Loading match history…</p>
+      <button id="tennis-retry" class="retry" hidden>Try again</button>
+      <div id="tennis-content" hidden>
+        <div class="record" aria-label="Record for the selected filters">
+          <p class="record-main" id="tennis-record"></p>
+          <p class="record-detail" id="tennis-breakdown"></p>
+        </div>
+        <div class="filters">
+          <label>Game<select id="tennis-format"><option value="all">All formats</option><option value="singles">Singles</option><option value="doubles">Doubles</option></select></label>
+          <label>League<select id="tennis-league"><option value="all">All leagues</option></select></label>
+        </div>
+        <p id="tennis-samples" class="sample-notice" hidden>Sample matches are shown to preview the layout. They aren’t part of my record.</p>
+        <div id="tennis-matches"></div>
+        <p class="updated" id="tennis-updated"></p>
+        <p class="record-note">Record counts played wins and losses, including retirements. Walkovers and sample matches are listed separately.</p>
+      </div>
+      <noscript><p>Enable JavaScript to load the current match history.</p></noscript>
+    </article>
+  </div>
+</Layout>
+
+<script>
+  import config from '../../tennis-config.json';
+  interface Score { kind: 'set' | 'match-tiebreak'; ben: number; opponent: number; tiebreak?: {ben: number; opponent: number} }
+  interface Match { id: string; date: string; league: string; season: string | null; format: 'singles' | 'doubles'; opponents: string[]; partner: string | null; status: string; result: string; sets: Score[]; notes?: string; sample?: boolean }
+  interface Data { schemaVersion: number; updatedAt: string; matches: Match[] }
+  const state = document.querySelector<HTMLParagraphElement>('#tennis-state')!;
+  const retry = document.querySelector<HTMLButtonElement>('#tennis-retry')!;
+  const content = document.querySelector<HTMLDivElement>('#tennis-content')!;
+  const format = document.querySelector<HTMLSelectElement>('#tennis-format')!;
+  const league = document.querySelector<HTMLSelectElement>('#tennis-league')!;
+  const list = document.querySelector<HTMLDivElement>('#tennis-matches')!;
+  let data: Data;
+
+  const isText = (v: unknown) => typeof v === 'string' && v.trim().length > 0 && v.length <= 2000;
+  const isScore = (v: unknown) => Number.isInteger(v) && Number(v) >= 0 && Number(v) <= 999;
+  function validate(value: unknown): asserts value is Data {
+    const d = value as Data;
+    if (!d || d.schemaVersion !== 1 || typeof d.updatedAt !== 'string' || !Number.isFinite(Date.parse(d.updatedAt)) || !Array.isArray(d.matches)) throw Error('Invalid data');
+    const ids = new Set();
+    for (const m of d.matches) {
+      if (!m || typeof m.id !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(m.id) || ids.has(m.id)) throw Error('Invalid match ID');
+      ids.add(m.id);
+      if (typeof m.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(m.date) || !Number.isFinite(Date.parse(m.date)) || new Date(m.date).toISOString().slice(0,10) !== m.date || !isText(m.league)) throw Error('Invalid match date/league');
+      if (!['singles','doubles'].includes(m.format) || !['completed','retired','walkover','historical-unknown'].includes(m.status) || !['win','loss','unknown'].includes(m.result)) throw Error('Invalid match');
+      if (!Array.isArray(m.opponents) || m.opponents.length > (m.format === 'singles' ? 1 : 2) || !m.opponents.every(isText) || (m.partner !== null && !isText(m.partner)) || (m.season !== null && !isText(m.season)) || (m.format === 'singles' && m.partner !== null) || (m.notes !== undefined && !isText(m.notes)) || (m.sample !== undefined && typeof m.sample !== 'boolean')) throw Error('Invalid match details');
+      if (!Array.isArray(m.sets) || m.sets.length > 10 || !m.sets.every(s => s && ['set','match-tiebreak'].includes(s.kind) && isScore(s.ben) && isScore(s.opponent) && (!s.tiebreak || (s.kind === 'set' && isScore(s.tiebreak.ben) && isScore(s.tiebreak.opponent))))) throw Error('Invalid score');
+    }
+  }
+
+  function node(tag: string, text: string, className = '') {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    element.className = className;
+    return element;
+  }
+  function scoreText(m: Match) {
+    return m.sets.map(s => `${s.kind === 'match-tiebreak' ? '[' : ''}${s.ben}–${s.opponent}${s.kind === 'match-tiebreak' ? ']' : ''}${s.tiebreak ? ` (${s.tiebreak.ben}–${s.tiebreak.opponent})` : ''}`).join(', ');
+  }
+  const dateFormat = new Intl.DateTimeFormat('en-US', {month:'short', day:'numeric', timeZone:'UTC'});
+  function render() {
+    const matches = data.matches.filter(m => (format.value === 'all' || m.format === format.value) && (league.value === 'all' || m.league === league.value)).sort((a,b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+    const real = matches.filter(m => !m.sample);
+    const played = real.filter(m => ['completed','retired'].includes(m.status) && m.result !== 'unknown');
+    const wins = played.filter(m => m.result === 'win').length;
+    const losses = played.filter(m => m.result === 'loss').length;
+    const rate = played.length ? `${Math.round(100*wins/played.length)}% wins` : 'No played results yet';
+    document.querySelector('#tennis-record')!.textContent = `${wins} win${wins === 1 ? '' : 's'} · ${losses} loss${losses === 1 ? '' : 'es'}`;
+    const breakdown = ['singles','doubles'].map(f => `${f === 'singles' ? 'Singles' : 'Doubles'} ${played.filter(m=>m.format===f && m.result==='win').length}–${played.filter(m=>m.format===f && m.result==='loss').length}`);
+    const walkovers = real.filter(m => m.status === 'walkover').length;
+    const unknown = real.filter(m => m.status === 'historical-unknown' || m.result === 'unknown').length;
+    document.querySelector('#tennis-breakdown')!.textContent = [rate, ...breakdown, walkovers ? `${walkovers} walkover${walkovers===1?'':'s'}` : '', unknown ? `${unknown} incomplete historical result${unknown===1?'':'s'}` : ''].filter(Boolean).join(' · ');
+    document.querySelector<HTMLParagraphElement>('#tennis-samples')!.hidden = !matches.some(m=>m.sample);
+    list.replaceChildren();
+    if (!matches.length) list.append(node('p', data.matches.length ? 'No matches for these filters.' : 'No matches yet. The first result will appear here.', 'empty'));
+    let year = '';
+    let group: HTMLElement;
+    for (const m of matches) {
+      if (m.date.slice(0,4) !== year) {
+        year = m.date.slice(0,4);
+        const section = document.createElement('section');
+        section.append(node('h2', year, 'match-year'));
+        group = document.createElement('ul'); group.className = 'match-list';
+        section.append(group); list.append(section);
+      }
+      const item = document.createElement('li'); item.className = 'match';
+      const meta = node('div', '', 'match-meta');
+      const time = document.createElement('time'); time.dateTime = m.date; time.textContent = dateFormat.format(new Date(`${m.date}T12:00:00Z`));
+      meta.append(time, node('span', `${m.league}${m.season ? ` · ${m.season}` : ''} · ${m.format}`));
+      if (m.sample) meta.append(node('span', 'Sample', 'sample-badge'));
+      const row = node('div', '', 'match-result');
+      const outcome = m.result === 'win' ? 'W' : m.result === 'loss' ? 'L' : '—';
+      const badge = node('span', outcome, `outcome ${m.result}`); badge.setAttribute('aria-label', m.result === 'unknown' ? 'Result unknown' : m.result);
+      row.append(badge, node('span', `vs. ${m.opponents.join(' & ') || 'Opponent not recorded'}`, 'opponent'));
+      if (m.sets.length) row.append(node('span', scoreText(m), 'score'));
+      item.append(meta,row);
+      if (m.partner) item.append(node('p', `With ${m.partner}`, 'match-note'));
+      if (m.status !== 'completed') item.append(node('p', m.status === 'historical-unknown' ? 'Historical record · details incomplete' : m.status === 'retired' ? 'Retirement' : 'Walkover', 'match-note'));
+      if (m.notes) item.append(node('p', m.notes, 'match-note'));
+      group!.append(item);
+    }
+    document.querySelector('#tennis-updated')!.textContent = `Updated ${new Intl.DateTimeFormat('en-US',{dateStyle:'medium', timeStyle:'short', timeZone:'America/New_York'}).format(new Date(data.updatedAt))} ET`;
+  }
+  async function load() {
+    retry.hidden = true; content.hidden = true; state.hidden = false; state.textContent = 'Loading match history…';
+    try {
+      const response = await fetch(config.publicUrl, {signal: AbortSignal.timeout(15000)});
+      if (!response.ok) throw Error('Fetch failed');
+      const value: unknown = await response.json(); validate(value); data = value;
+      league.replaceChildren(new Option('All leagues','all'), ...[...new Set(data.matches.map(m=>m.league))].sort().map(name=>new Option(name,name)));
+      render(); state.hidden = true; content.hidden = false;
+    } catch {
+      state.textContent = 'Match history is unavailable right now. Please try again.';
+      retry.hidden = false;
+    }
+  }
+  format.addEventListener('change',render); league.addEventListener('change',render);
+  retry.addEventListener('click',load); load();
+</script>
+
+<style is:global>
+  [hidden] { display: none !important; }
+  .tennis { max-width: 850px; }
+  .tennis h1 { margin-bottom: .4em; }
+  .intro { color: var(--muted); max-width: 620px; }
+  .record { padding: 22px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 32px 0 26px; }
+  .record-main { font-size: clamp(30px,5vw,42px); color: var(--head); line-height: 1.2; margin: 0 0 9px !important; }
+  .record-detail, .record-note, .updated { font-size: 16px; color: var(--muted); }
+  .record-detail { margin: 0 !important; }
+  .filters { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 28px; }
+  label { display: grid; gap: 5px; font-size: 14px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+  select { font: 18px var(--serif); padding: 9px 30px 9px 10px; border: 1px solid var(--rule); border-radius: 3px; color: var(--ink); background: var(--bg); max-width: 100%; }
+  .sample-notice { padding: 12px 16px; background: var(--rule-soft); color: var(--muted); font-size: 17px; border-radius: 3px; }
+  .match-year { margin-top: 32px !important; }
+  .match-list { list-style: none; padding: 0 !important; }
+  .match { margin: 0 !important; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+  .match-meta { display: flex; flex-wrap: wrap; gap: 6px 15px; color: var(--muted); font-size: 16px; align-items: center; }
+  .match-meta time { color: var(--ink); min-width: 50px; }
+  .match-result { display: grid; grid-template-columns: 24px minmax(0,1fr) auto; align-items: baseline; gap: 10px 14px; margin-top: 7px; }
+  .opponent { font-size: 24px; overflow-wrap: anywhere; }
+  .outcome { font-size: 14px; font-weight: 700; min-width: 24px; }
+  .win { color: #486747; } .loss { color: #8a574d; }
+  .score { font-size: 21px; font-variant-numeric: tabular-nums; }
+  .match-note { margin: 5px 0 0 38px !important; font-size: 17px; color: var(--muted); overflow-wrap: anywhere; }
+  .sample-badge { font-size: 12px; padding: 0 7px; border: 1px solid var(--rule); border-radius: 3px; }
+  .updated { margin-top: 35px !important; margin-bottom: 7px !important; }
+  .retry { font: inherit; color: var(--link); background: none; border: 1px solid var(--rule); border-radius: 3px; padding: 6px 15px; cursor: pointer; }
+  @media(max-width: 600px) { .match-result { grid-template-columns: 24px minmax(0,1fr); } .score { grid-column: 2; } .filters label { min-width: 0; flex: 1 1 150px; } .filters select { width: 100%; } }
+</style>
