@@ -22,7 +22,6 @@ ETC links to Running, Sauna, and Tennis. Running + Sauna also remain in the foot
 | `/running` | Races — parsed from `fitness.md` |
 | `/tennis` | Runtime S3 match history; see `docs/tennis-operations.md` |
 | `/sauna` · `/sauna/costs` | Sauna photo dump + cost table |
-| `/about` | Built but **unlinked** (not in nav/footer) |
 
 Old routes (`/gallery/*`, `/projects/*`, `/notepad/*`, `/writing`, `/openclaw`,
 `/thoughts/*`) redirect to their new homes via `redirects` in `astro.config.mjs`.
@@ -42,7 +41,7 @@ src/
     ├── index.astro       # Gallery home
     ├── album/[slug].astro
     ├── gallery/[album].astro  # redirect shim -> /album/[slug]
-    ├── contact.astro · running.astro · about.astro
+    ├── contact.astro · running.astro · tennis.astro
     └── sauna/{index,costs}.astro
 public/
 ├── manifest.json         # PWA manifest

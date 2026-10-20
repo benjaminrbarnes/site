@@ -250,21 +250,6 @@ const year = new Date().getFullYear();
   .lb-next:hover { background: linear-gradient(270deg, rgba(0,0,0,.25), transparent); }
   .lb-counter { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.82); font-size: 15px; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
 
-  /* ---------- About ---------- */
-  .about { display: grid; grid-template-columns: 320px 1fr; gap: 56px; padding: 60px 0 110px; align-items: start; animation: rise .42s cubic-bezier(.2,.7,.2,1); }
-  .about-portrait { position: sticky; top: 110px; }
-  .about-portrait .portrait { border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; aspect-ratio: 4 / 5; background: #efeadd; display: flex; align-items: center; justify-content: center; }
-  .about-portrait .portrait img { width: 100%; height: 100%; object-fit: cover; }
-  .about-portrait .portrait span { font-family: var(--mono); font-size: 12.5px; letter-spacing: .02em; color: #877f6f; }
-  .about-name { font-size: 40px; font-weight: 600; color: var(--head); letter-spacing: -.015em; margin: 0 0 .5em; line-height: 1.1; }
-  .about-body p { font-size: 21px; line-height: 1.6; margin: 0 0 1.05em; text-wrap: pretty; }
-  .about-note { font-size: 15px; color: var(--faint); font-style: italic; }
-  .about-also { margin-top: 38px; padding-top: 30px; border-top: 1px solid var(--rule); }
-  .also-list { list-style: none; padding: 0; margin: 0; }
-  .also-list li { font-size: 19px; color: var(--muted); margin: 0 0 14px; line-height: 1.5; }
-  .also-list a { font-size: 19px; color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
-  .also-list a:hover { color: var(--link-h); }
-
   /* ---------- Footer ---------- */
   .site-footer { margin-top: auto; border-top: 1px solid var(--rule); }
   .foot-row { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding: 30px 0; }
@@ -286,9 +271,6 @@ const year = new Date().getFullYear();
     .menu a, .menu summary { font-size: 15px; }
     .article h1 { font-size: 34px; }
     .lb-nav { width: 64px; font-size: 34px; }
-    .about { grid-template-columns: 1fr; gap: 30px; }
-    .about-portrait { position: static; max-width: 260px; }
-    .about-name { font-size: 32px; }
     .foot-row { flex-direction: column; align-items: flex-start; gap: 18px; }
   }
   @media (max-width: 460px) {
@@ -296,7 +278,7 @@ const year = new Date().getFullYear();
     .masonry { columns: 1; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .page, .gallery, .masonry, .article, .contact, .lightbox, .about { animation: none; }
+    .page, .gallery, .masonry, .article, .contact, .lightbox { animation: none; }
     html { scroll-behavior: auto; }
     .card { transition: none; }
   }

@@ -17,7 +17,7 @@ Push to `master` triggers AWS Amplify deployment.
 ## Structure
 
 The site is photography-first: the homepage **is** the gallery, with a couple
-of personal sections demoted to footnotes (footer + the hidden About page).
+of personal sections accessible through the ETC dropdown.
 
 | Route | Page |
 |---|---|
@@ -27,7 +27,6 @@ of personal sections demoted to footnotes (footer + the hidden About page).
 | `/running` | Races (parsed from `fitness.md`) — footer only |
 | `/sauna` | Sauna photo dump — footer only |
 | `/sauna/costs` | Itemized cost table |
-| `/about` | Built but **unlinked** (not in nav/footer yet) |
 
 Nav is **Photos · Contact**. Old routes (`/gallery/*`, `/projects/*`, `/notepad/*`,
 `/writing`, `/openclaw`, `/thoughts/*`) redirect via `astro.config.mjs`.
@@ -48,7 +47,6 @@ src/
     ├── contact.astro
     ├── running.astro
     ├── sauna/{index,costs}.astro
-    └── about.astro      # unlinked
 ```
 
 ## Image Infrastructure
