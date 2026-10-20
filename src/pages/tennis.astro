@@ -6,9 +6,7 @@ import Layout from '../layouts/Layout.astro';
   <div class="wrap">
     <article class="article tennis" aria-labelledby="tennis-title">
       <nav class="crumb" aria-label="Breadcrumb"><a href="/">Photos</a><span class="sep">/</span><span class="cur">Tennis</span></nav>
-      <p class="idx-sub">On court</p>
       <h1 id="tennis-title">Tennis</h1>
-      <p class="intro">A match-by-match record. The good days, the close ones, and everything in between.</p>
       <p id="tennis-state" role="status" aria-live="polite">Loading match history…</p>
       <button id="tennis-retry" class="retry" hidden>Try again</button>
       <div id="tennis-content" hidden>
@@ -23,7 +21,6 @@ import Layout from '../layouts/Layout.astro';
         <p id="tennis-samples" class="sample-notice" hidden>Sample matches are shown to preview the layout. They aren’t part of my record.</p>
         <div id="tennis-matches"></div>
         <p class="updated" id="tennis-updated"></p>
-        <p class="record-note">Record counts played wins and losses, including retirements. Walkovers and sample matches are listed separately.</p>
       </div>
       <noscript><p>Enable JavaScript to load the current match history.</p></noscript>
     </article>
@@ -133,10 +130,9 @@ import Layout from '../layouts/Layout.astro';
   [hidden] { display: none !important; }
   .tennis { max-width: 850px; }
   .tennis h1 { margin-bottom: .4em; }
-  .intro { color: var(--muted); max-width: 620px; }
   .record { padding: 22px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 32px 0 26px; }
   .record-main { font-size: clamp(30px,5vw,42px); color: var(--head); line-height: 1.2; margin: 0 0 9px !important; }
-  .record-detail, .record-note, .updated { font-size: 16px; color: var(--muted); }
+  .record-detail, .updated { font-size: 16px; color: var(--muted); }
   .record-detail { margin: 0 !important; }
   .filters { display: flex; flex-wrap: wrap; gap: 18px; margin-bottom: 28px; }
   label { display: grid; gap: 5px; font-size: 14px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
