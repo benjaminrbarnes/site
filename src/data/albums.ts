@@ -19,8 +19,14 @@ const IMAGE_HANDLER = 'https://d35s6fmxia7g6v.cloudfront.net';
 
 // Helper to build image URLs with automatic resizing
 // width=0 means auto (maintain aspect ratio)
-const img = (path: string, width = 2400) =>
-  `${IMAGE_HANDLER}/fit-in/${width}x0/filters:quality(90)/photos/${path}`;
+const img = (path: string, width = 2400) => {
+  // This scan needs its EXIF 180-degree orientation. Serve JPEG because
+  // browsers ignore that orientation in the handler's WebP output.
+  const format = path === '2025/new9/006961150018.jpg'
+    ? ':format(jpeg)'
+    : '';
+  return `${IMAGE_HANDLER}/fit-in/${width}x0/filters:quality(90)${format}/photos/${path}`;
+};
 
 // Helper to generate sequential image numbers
 const range = (start: number, end: number): number[] =>
