@@ -46,6 +46,7 @@
     if (i < 0) i = items.length - 1;
     if (i >= items.length) i = 0;
     index = i;
+    lbImg.alt = items[i].alt;
     currentEl.textContent = String(i + 1);
 
     const thumb = items[i].src;            // 800px — already loaded by the masonry

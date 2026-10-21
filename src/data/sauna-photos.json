@@ -1,0 +1,561 @@
+[
+  {
+    "file": "1.jpg",
+    "date": "2024-12-06",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "2.jpg",
+    "date": "2024-12-06",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "3.jpg",
+    "date": "2024-12-06",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "4.jpg",
+    "date": "2024-12-07",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "5.jpg",
+    "date": "2024-12-07",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "6.jpg",
+    "date": "2024-12-08",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "7.jpg",
+    "date": "2024-12-08",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "8.jpg",
+    "date": "2024-12-08",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "9.jpg",
+    "date": "2024-12-09",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "10.jpg",
+    "date": "2024-12-09",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "11.jpg",
+    "date": "2024-12-11",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "13.jpg",
+    "date": "2024-12-13",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "14.jpg",
+    "date": "2024-12-13",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "15.jpg",
+    "date": "2024-12-15",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "16.jpg",
+    "date": "2024-12-15",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "17.jpg",
+    "date": "2024-12-16",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "18.jpg",
+    "date": "2024-12-16",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "19.jpg",
+    "date": "2024-12-16",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "20.jpg",
+    "date": "2024-12-16",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "21.jpg",
+    "date": "2024-12-17",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "22.jpg",
+    "date": "2024-12-17",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "23.jpg",
+    "date": "2024-12-17",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "24.jpg",
+    "date": "2024-12-18",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "25.jpg",
+    "date": "2024-12-18",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "26.jpg",
+    "date": "2024-12-19",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "27.jpg",
+    "date": "2024-12-19",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "28.jpg",
+    "date": "2024-12-19",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "29.jpg",
+    "date": "2024-12-23",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "30.jpg",
+    "date": "2024-12-23",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "31.jpg",
+    "date": "2024-12-23",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "32.jpg",
+    "date": "2024-12-23",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "33.jpg",
+    "date": "2024-12-23",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "34.jpg",
+    "date": "2024-12-23",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "35.jpg",
+    "date": "2024-12-23",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "36.jpg",
+    "date": "2024-12-27",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "37.jpg",
+    "date": "2024-12-27",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "38.jpg",
+    "date": "2024-12-28",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "39.jpg",
+    "date": "2024-12-28",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "40.jpg",
+    "date": "2024-12-30",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "41.jpg",
+    "date": "2024-12-30",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "42.jpg",
+    "date": "2024-12-30",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "43.jpg",
+    "date": "2025-01-01",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "44.jpg",
+    "date": "2025-01-01",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "45.jpg",
+    "date": "2025-01-01",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "46.jpg",
+    "date": "2025-01-03",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "47.jpg",
+    "date": "2025-01-04",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "48.jpg",
+    "date": "2025-01-04",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "49.jpg",
+    "date": "2025-01-06",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "50.jpg",
+    "date": "2025-01-06",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "51.jpg",
+    "date": "2025-01-06",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "52.jpg",
+    "date": "2025-01-07",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "53.jpg",
+    "date": "2025-01-07",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "54.jpg",
+    "date": "2025-01-07",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "55.jpg",
+    "date": "2025-01-07",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "56.jpg",
+    "date": "2025-01-09",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "57.jpg",
+    "date": "2025-01-09",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "58.jpg",
+    "date": "2025-01-09",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "59.jpg",
+    "date": "2025-02-15",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "60.jpg",
+    "date": "2025-02-15",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "61.jpg",
+    "date": "2025-03-24",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "62.jpg",
+    "date": "2025-03-24",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "63.jpg",
+    "date": "2025-08-02",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "64.jpg",
+    "date": "2025-08-08",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "65.jpg",
+    "date": "2025-08-08",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "66.jpg",
+    "date": "2025-08-08",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "67.jpg",
+    "date": "2025-08-18",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "68.jpg",
+    "date": "2025-11-02",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "69.jpg",
+    "date": "2025-11-03",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "70.jpg",
+    "date": "2025-11-04",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "71.jpg",
+    "date": "2025-11-04",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "72.jpg",
+    "date": "2025-11-05",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "73.jpg",
+    "date": "2025-11-05",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "74.jpg",
+    "date": "2025-11-05",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "75.jpg",
+    "date": "2025-11-05",
+    "width": 3024,
+    "height": 4032
+  },
+  {
+    "file": "76.jpg",
+    "date": "2025-11-05",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "77.jpg",
+    "date": "2025-11-06",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "78.jpg",
+    "date": "2025-11-06",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "79.jpg",
+    "date": "2025-11-06",
+    "width": 4032,
+    "height": 3024
+  },
+  {
+    "file": "80.jpg",
+    "date": "2025-11-06",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "81.jpg",
+    "date": "2025-11-06",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "82.jpg",
+    "date": "2025-11-06",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "83.jpg",
+    "date": "2025-11-06",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "84.jpg",
+    "date": "2025-11-06",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "85.jpg",
+    "date": "2025-11-07",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "86.jpg",
+    "date": "2025-11-07",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "87.jpg",
+    "date": "2025-11-08",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "88.jpg",
+    "date": "2025-11-10",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "89.jpg",
+    "date": "2025-11-11",
+    "width": 5712,
+    "height": 4284
+  },
+  {
+    "file": "90.jpg",
+    "date": "2025-11-11",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "91.jpg",
+    "date": "2025-11-11",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "92.jpg",
+    "date": "2025-11-13",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "93.jpg",
+    "date": "2025-11-17",
+    "width": 4284,
+    "height": 5712
+  },
+  {
+    "file": "94.jpg",
+    "date": null,
+    "width": 1792,
+    "height": 2400,
+    "chapter": "Finished sauna"
+  }
+]

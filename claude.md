@@ -12,7 +12,7 @@ Personal photography portfolio website built with Astro. Static site showcasing 
 
 ## Information Architecture
 Photography-first: the homepage **is** the gallery. Nav is **Photos · ETC · Contact**.
-ETC links to Running, Sauna, and Tennis. Running + Sauna also remain in the footer.
+ETC links to Running, Sauna, Home Gym, and Tennis. Running + Sauna also remain in the footer.
 
 | Route | Page |
 |---|---|
@@ -21,7 +21,8 @@ ETC links to Running, Sauna, and Tennis. Running + Sauna also remain in the foot
 | `/contact` | Contact |
 | `/running` | Races — parsed from `fitness.md` |
 | `/tennis` | Runtime S3 match history; see `docs/tennis-operations.md` |
-| `/sauna` · `/sauna/costs` | Sauna photo dump + cost table |
+| `/home-gym` | Home gym photos, oldest first with month/year dividers |
+| `/sauna` · `/sauna/costs` | Month-grouped sauna photos + cost table |
 
 Old routes (`/gallery/*`, `/projects/*`, `/notepad/*`, `/writing`, `/openclaw`,
 `/thoughts/*`) redirect to their new homes via `redirects` in `astro.config.mjs`.
@@ -55,6 +56,8 @@ public/
 | `src/pages/album/[slug].astro` | Dynamic photo album template |
 | `src/pages/index.astro` | Gallery grid showing visible albums |
 | `src/components/Lightbox.astro` | Keyboard/swipe lightbox, 800→1600 URL swap |
+| `src/components/ProjectGallery.astro` | Shared chronological month sections for Gym + Sauna |
+| `src/data/home-gym-photos.json` · `sauna-photos.json` | Capture dates, files, full exported dimensions |
 | `src/layouts/Layout.astro` | Global design tokens, header, footer |
 | `astro.config.mjs` | Astro config + route redirects |
 
@@ -64,6 +67,7 @@ npm install     # Install dependencies
 npm run dev     # Dev server at localhost:4321
 npm run build   # Production build to ./dist
 npm run preview # Preview production build
+node --test tests/projectGallery.test.mjs # Project chronology/month grouping
 ```
 
 ## Adding New Photo Albums
@@ -89,6 +93,11 @@ https://d35s6fmxia7g6v.cloudfront.net/fit-in/800x0/filters:quality(90)/photos/[f
 ```
 
 ## Uploading Photos to S3
+Use the isolated `website-maintainer` IAM profile for ordinary website AWS work,
+never the default/root session. Read `docs/website-aws-access.md` for the exact
+environment setup, identity check, permitted resources, and recovery safeguards.
+Hermes retains its separate narrowly scoped `tennis-publisher` credentials.
+
 Photos are stored in the `benjaminbarnes.co` S3 bucket, partitioned by year:
 ```
 s3://benjaminbarnes.co/photos/[YEAR]/[folder]/

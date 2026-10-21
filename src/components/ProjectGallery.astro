@@ -1,0 +1,87 @@
+---
+import { groupProjectPhotos, type ProjectPhoto } from '../data/projectGallery';
+
+interface Props {
+  photos: ProjectPhoto[];
+  folder: string;
+  project: string;
+  idPrefix: string;
+}
+
+const { photos, folder, project, idPrefix } = Astro.props;
+const sections = groupProjectPhotos(photos);
+const positions = new Map(photos.map((photo, index) => [photo.file, index + 1]));
+const photoUrl = (file: string) =>
+  `https://d35s6fmxia7g6v.cloudfront.net/fit-in/800x0/filters:quality(90)/photos/${folder}/${file}`;
+---
+
+<div class="project-timeline">
+  {sections.map((section, sectionIndex) => (
+    <section class="photo-month" aria-labelledby={`${idPrefix}-${section.key}`}>
+      <h2 class="month-divider" id={`${idPrefix}-${section.key}`}>
+        {section.month
+          ? <time datetime={section.month}>{section.label}</time>
+          : <span>{section.label}</span>}
+      </h2>
+      <div class="masonry project-gallery">
+        {section.photos.map((photo, index) => (
+          <button class="m-item" aria-label={`Open ${project.toLowerCase()} photo ${positions.get(photo.file)} from ${section.label}`} data-photo={photo.file} data-date={photo.date}>
+            <img
+              src={photoUrl(photo.file)}
+              alt={`${project} — ${section.label}, photo ${positions.get(photo.file)}`}
+              width={photo.width}
+              height={photo.height}
+              loading={sectionIndex === 0 && index < 2 ? 'eager' : 'lazy'}
+              decoding="async"
+              style={`aspect-ratio: ${photo.width} / ${photo.height};`}
+            />
+          </button>
+        ))}
+      </div>
+    </section>
+  ))}
+</div>
+
+<style>
+  .photo-month + .photo-month { margin-top: 54px; }
+  .photo-month { scroll-margin-top: 130px; }
+  .month-divider {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin: 0 0 22px;
+    color: var(--muted);
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .month-divider::after {
+    content: '';
+    height: 1px;
+    background: var(--rule);
+    flex: 1;
+    min-width: 20px;
+  }
+  /* Read across each row, then down. CSS columns would scramble chronology. */
+  .project-gallery {
+    columns: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    align-items: start;
+    padding: 0;
+  }
+  .project-gallery .m-item { margin: 0; }
+  .project-gallery .m-item:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 4px;
+  }
+  @media (max-width: 900px) {
+    .project-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 460px) {
+    .project-gallery { grid-template-columns: 1fr; }
+    .photo-month + .photo-month { margin-top: 38px; }
+    .month-divider { font-size: 23px; gap: 16px; }
+  }
+</style>

@@ -9,7 +9,7 @@ const { title = 'Ben Barnes', description = 'Photographs by Ben Barnes.' } = Ast
 const path = Astro.url.pathname;
 const inPhotos = path === '/' || path.startsWith('/album');
 const inContact = path.startsWith('/contact');
-const inEtc = ['/running', '/sauna', '/tennis'].some(section => path.startsWith(section));
+const inEtc = ['/running', '/sauna', '/tennis', '/home-gym'].some(section => path.startsWith(section));
 const year = new Date().getFullYear();
 ---
 
@@ -44,6 +44,7 @@ const year = new Date().getFullYear();
               <div class="etc-links">
                 <a href="/running">Running</a>
                 <a href="/sauna">Sauna</a>
+                <a href="/home-gym">Home Gym</a>
                 <a href="/tennis">Tennis</a>
               </div>
             </details>

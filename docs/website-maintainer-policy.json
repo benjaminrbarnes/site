@@ -1,0 +1,140 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PreventSecurityAdministrationAndPermanentVersionDeletion",
+      "Effect": "Deny",
+      "Action": [
+        "iam:*",
+        "organizations:*",
+        "account:*",
+        "sts:AssumeRole*",
+        "s3:DeleteObjectVersion",
+        "s3:DeleteBucket",
+        "s3:PutBucketPolicy",
+        "s3:DeleteBucketPolicy",
+        "s3:PutBucketAcl",
+        "s3:PutObjectAcl",
+        "s3:PutBucketVersioning",
+        "s3:PutLifecycleConfiguration",
+        "s3:PutBucketPublicAccessBlock",
+        "s3:PutBucketOwnershipControls"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "ReadWebsiteBucketConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:GetBucketVersioning",
+        "s3:GetLifecycleConfiguration",
+        "s3:GetEncryptionConfiguration"
+      ],
+      "Resource": [
+        "arn:aws:s3:::benjaminbarnes.co",
+        "arn:aws:s3:::benjaminbarnes-tennis-552544732655"
+      ]
+    },
+    {
+      "Sid": "ListOnlyWebsitePhotoPrefix",
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket", "s3:ListBucketVersions"],
+      "Resource": "arn:aws:s3:::benjaminbarnes.co",
+      "Condition": {
+        "StringLike": {"s3:prefix": ["photos", "photos/", "photos/*"]}
+      }
+    },
+    {
+      "Sid": "MaintainRecoverableWebsitePhotos",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:AbortMultipartUpload",
+        "s3:ListMultipartUploadParts"
+      ],
+      "Resource": "arn:aws:s3:::benjaminbarnes.co/photos/*"
+    },
+    {
+      "Sid": "MaintainOnlyTennisDocument",
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:GetObjectVersion", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::benjaminbarnes-tennis-552544732655/tennis/matches.json"
+    },
+    {
+      "Sid": "ListOnlyTennisDocumentVersions",
+      "Effect": "Allow",
+      "Action": "s3:ListBucketVersions",
+      "Resource": "arn:aws:s3:::benjaminbarnes-tennis-552544732655",
+      "Condition": {"StringEquals": {"s3:prefix": "tennis/matches.json"}}
+    },
+    {
+      "Sid": "ReadAndInvalidateWebsiteDistributions",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:GetDistribution",
+        "cloudfront:GetDistributionConfig",
+        "cloudfront:ListInvalidations",
+        "cloudfront:GetInvalidation",
+        "cloudfront:CreateInvalidation"
+      ],
+      "Resource": [
+        "arn:aws:cloudfront::552544732655:distribution/E1CR178U2NK86M",
+        "arn:aws:cloudfront::552544732655:distribution/E32K5P3LYOEF4Q"
+      ]
+    },
+    {
+      "Sid": "InspectWebsiteAmplifyApp",
+      "Effect": "Allow",
+      "Action": ["amplify:GetApp", "amplify:ListBranches", "amplify:ListDomainAssociations"],
+      "Resource": "arn:aws:amplify:us-east-1:552544732655:apps/d805pdw6o5mtv"
+    },
+    {
+      "Sid": "InspectProductionBranch",
+      "Effect": "Allow",
+      "Action": "amplify:GetBranch",
+      "Resource": "arn:aws:amplify:us-east-1:552544732655:apps/d805pdw6o5mtv/branches/master"
+    },
+    {
+      "Sid": "ListDeploymentHistoryOnlyForWebsiteApp",
+      "Effect": "Allow",
+      "Action": "amplify:ListJobs",
+      "Resource": [
+        "arn:aws:amplify:us-east-1:552544732655:apps/d805pdw6o5mtv",
+        "arn:aws:amplify:us-east-1:552544732655:apps/d805pdw6o5mtv/*"
+      ]
+    },
+    {
+      "Sid": "OperateProductionDeployments",
+      "Effect": "Allow",
+      "Action": ["amplify:GetJob", "amplify:StartJob", "amplify:StopJob"],
+      "Resource": "arn:aws:amplify:us-east-1:552544732655:apps/d805pdw6o5mtv/branches/master/jobs/*"
+    },
+    {
+      "Sid": "InspectOnlyWebsiteImageHandler",
+      "Effect": "Allow",
+      "Action": ["lambda:GetFunctionConfiguration", "lambda:GetPolicy", "lambda:ListTags"],
+      "Resource": "arn:aws:lambda:us-east-1:552544732655:function:ImageResizer-BackEndImageHandlerLambdaFunctionADEF-kOgafqrYuc6j"
+    },
+    {
+      "Sid": "InspectOnlyWebsiteImageApi",
+      "Effect": "Allow",
+      "Action": "apigateway:GET",
+      "Resource": [
+        "arn:aws:apigateway:us-east-1::/restapis/04857sl81a",
+        "arn:aws:apigateway:us-east-1::/restapis/04857sl81a/*"
+      ]
+    },
+    {
+      "Sid": "ReadOnlyWebsiteImageHandlerLogs",
+      "Effect": "Allow",
+      "Action": ["logs:DescribeLogStreams", "logs:FilterLogEvents", "logs:GetLogEvents"],
+      "Resource": [
+        "arn:aws:logs:us-east-1:552544732655:log-group:/aws/lambda/ImageResizer-BackEndImageHandlerLambdaFunctionADEF-kOgafqrYuc6j:*"
+      ]
+    }
+  ]
+}

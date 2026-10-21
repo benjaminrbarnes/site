@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Lightbox from '../components/Lightbox.astro';
+import ProjectGallery from '../components/ProjectGallery.astro';
+import photos from '../data/home-gym-photos.json';
+---
+
+<Layout title="Home Gym — Ben Barnes" description="Turning a backyard shed into a home gym, month by month.">
+  <div class="wrap">
+    <article class="article home-gym" aria-labelledby="gym-title">
+      <nav class="crumb" aria-label="Breadcrumb">
+        <a href="/">Photos</a><span class="sep">/</span><span class="cur">Home Gym</span>
+      </nav>
+      <h1 id="gym-title">Home Gym</h1>
+      <ProjectGallery photos={photos} folder="2026/home-gym" project="Home gym" idPrefix="gym" />
+    </article>
+  </div>
+  <Lightbox />
+</Layout>
+
+<style>
+  .home-gym { max-width: var(--max); }
+  .home-gym h1 { margin-bottom: 40px; }
+</style>
