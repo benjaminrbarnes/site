@@ -10,6 +10,7 @@ const path = Astro.url.pathname;
 const inPhotos = path === '/' || path.startsWith('/album');
 const inContact = path.startsWith('/contact');
 const inEtc = ['/running', '/sauna', '/tennis', '/home-gym'].some(section => path.startsWith(section));
+const showFooter = !['/running', '/sauna'].some(section => path === section || path.startsWith(`${section}/`));
 const year = new Date().getFullYear();
 ---
 
@@ -58,7 +59,7 @@ const year = new Date().getFullYear();
       <slot />
     </main>
 
-    <footer class="site-footer">
+    {showFooter && <footer class="site-footer">
       <div class="wrap">
         <div class="foot-row">
           <div class="foot-c">&copy; {year} Ben Barnes</div>
@@ -70,7 +71,7 @@ const year = new Date().getFullYear();
           </nav>
         </div>
       </div>
-    </footer>
+    </footer>}
   </body>
 </html>
 

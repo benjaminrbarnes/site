@@ -13,6 +13,7 @@ Personal photography portfolio website built with Astro. Static site showcasing 
 ## Information Architecture
 Photography-first: the homepage **is** the gallery. Nav is **Photos · ETC · Contact**.
 ETC links to Running, Sauna, Home Gym, and Tennis. Running + Sauna also remain in the footer.
+The footer is omitted on Running and all Sauna pages; other pages retain it.
 
 | Route | Page |
 |---|---|
